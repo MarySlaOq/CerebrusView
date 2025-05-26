@@ -19,9 +19,22 @@ function updateCountdown() {
 
 //mouse stuff
 
-const myBox = document.getElementById('box1');
+const myBox = document.getElementById('myBox');
+const myButton = document.getElementById('myButton');
 
-function changeColor(event){
-    console.log(event);
-}
-myBox.addEventListener("click", callback);
+myBox.addEventListener("click", event =>{
+    event.target.style.backgroundColor = "tomato";
+    event.target.textContent = "bite!!"
+
+});
+
+myBox.addEventListener("mouseover", event =>{
+    event.target.style.backgroundColor = "yellow";
+    event.target.textContent = "grrrr!!"
+
+});
+myBox.addEventListener("mouseout", event =>{
+    event.target.style.backgroundColor = "aquamarine";
+    event.target.textContent = "click me :e"
+
+});

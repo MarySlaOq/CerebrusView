@@ -22,7 +22,7 @@
 
 }
 
-#box1 {
+#myBox {
     background-color: aquamarine;
     width: 300px;
     height: 300px;
@@ -31,4 +31,8 @@
     text-align: center;
     display: flex;
     align-items: center;
+}
+
+#myButton{
+    font-size: 3rem;
 }
