@@ -36,3 +36,7 @@
 #myButton{
     font-size: 3rem;
 }
+
+#fridge {
+    background-image: image("imgs/fridge.jpeg");
+}

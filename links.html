@@ -3,22 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="countdown.css">
     <title>Document</title>
+    <style>
+        * {
+            background-image: url(imgs/fridge.jpeg);
+            background-repeat: no-repeat;
+            background-size: 60%;
+            background-position-x: center;
+        }
+        #seta-esq {
+        position: absolute;
+        top: 80%;
+        left: 20%;
+        }
+        #seta-dir {
+        position: absolute;
+        top: 80%;
+        right: 20%;
+        }
+    </style>
 </head>
 <body>
-    <div class="navbar">
-        <a href="index.html" class="logo">Cerebrus yay</a>
-        <div class="menu">
-            <a href="index.html">Home</a>
-            <a href="about.html">About</a>
-            <a href="creators.html">Creators</a>
-            <a class="active" href="links.html">Funny Links</a>
-        </div>
 
+    <div class="mousestuff">
+        <div id="fridge"></div>
     </div>
-    <footer>
-        Made with love
-    </footer>
+    
+    <div class="setas">
+        <div id="seta-esq"><a href="index.html"><img src="imgs/seta-esq.png" alt="pessoateste" height="100px"></a></div>
+        <div id="seta-dir"><a href="countdown.html"><img src="imgs/seta-dir.png" alt="pessoateste" height="100px"></a></div>    
+    </div>
 </body>
 </html>

@@ -20,6 +20,7 @@ function updateCountdown() {
 //mouse stuff
 
 const myBox = document.getElementById('myBox');
+const fridge = document.getElementById('fridge');
 const myButton = document.getElementById('myButton');
 
 myBox.addEventListener("click", event =>{
@@ -36,5 +37,10 @@ myBox.addEventListener("mouseover", event =>{
 myBox.addEventListener("mouseout", event =>{
     event.target.style.backgroundColor = "aquamarine";
     event.target.textContent = "click me :e"
+
+});
+
+fridge.addEventListener("mouseover", event =>{
+    event.target.style.backgroundImage ="imgs/fridge-open.jpg";
 
 });

@@ -1,8 +1,9 @@
-body {
-  background-image: url("https://i.ibb.co/K4nFrCp/emptymorgue.png");
-  min-height: 100%;
-  min-width: 100%;
+* {
+  background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.livspace-cdn.com%2Fplain%2Fhttps%3A%2F%2Fd3gq2merok8n5r.cloudfront.net%2Fabhinav%2Fond-1634120396-Obfdc%2Fjfm-2023-1672723560-eFGVH%2Fkitchen-1672749519-TNomr%2Fd-inki-jfm2023-400-1673074720-HjsAG%2F1-1673074746-J4GCl.jpg&f=1&nofb=1&ipt=5cedcf239957951fde851383c72989a6ba29e8d949aae8db90131e3432584b14");
+  background-repeat: no-repeat;
+  background-size: 100%;
 }
+
 
 .navbar {
   background-color: #333;
@@ -42,7 +43,18 @@ footer {
 
 img {
   max-width: 100%;
-            max-height: 100%;
-            display: block;
-            margin: auto;
+  max-height: 100%;
+  display: block;
+  margin: auto;
+}
+
+#seta-esq {
+  position: absolute;
+  top: 80%;
+  left: 20%;
+}
+#seta-dir {
+  position: absolute;
+  top: 80%;
+  right: 20%;
 }
