@@ -39,3 +39,8 @@ html, body {
 .left {
     background-image: url('../imgs/seta-esq.png');
 }
+
+.trash {
+    
+    background-image: url('../imgs/trash.png');
+}

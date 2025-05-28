@@ -39,8 +39,3 @@ myBox.addEventListener("mouseout", event =>{
     event.target.textContent = "click me :e"
 
 });
-
-fridge.addEventListener("mouseover", event =>{
-    event.target.style.backgroundImage ="imgs/fridge-open.jpg";
-
-});
