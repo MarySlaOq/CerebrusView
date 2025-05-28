@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="core/elements.css">
+    <title>Le game</title>
+
+    <script src="core/scene.js"></script>
+    <script src="core/interactable.js"></script>
+
 </head>
 <body>
     <!---
@@ -18,13 +23,46 @@
         </div>
     </div>
     -->
-    
 
-    <div class="setas">
+    <div id="game">
+
+        <div id="scene"></div>
+
+        <div id="Kitchen" class="scene active">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/kitchen.png" alt="">
+                <span href="Fridge" class="portal right"></span>
+            </div>
+        </div>
+
+
+        <div id="Fridge" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/fridge.jpeg" alt="">
+                <span href="Kitchen" class="portal left"></span>
+            </div>
+        </div>
+
+        <div id="FridgeOpen" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/fridge-open.jpg" alt="">
+                <span href="Kitchen" class="portal left"></span>
+            </div>
+        </div>
+
+    </div>
+      
+    <!-- Import le game -->
+    <script type="module" src="game.js"></script>
+
+    <!-- <div class="setas">
         <div id="seta-esq"><a href="links.html"><img src="imgs/seta-esq.png" alt="pessoateste" height="100px"></a></div>
         <div id="seta-dir"><a href="countdown.html"><img src="imgs/seta-dir.png" alt="pessoateste" height="100px"></a></div>    
     </div>
-   
+    -->
     
 </body>
 </html>

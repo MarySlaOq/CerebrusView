@@ -1,0 +1,41 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;  /* Horizontally center */
+    align-items: center;      /* Vertically center */
+    background-color: white;  /* Optional: fill background */
+}
+
+#scene {
+    width: 1280px;
+    height: 720px;
+    background-image: url('haii nani ga suki?.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: black; 
+    position: relative;
+    border: 2px solid #000;
+    margin: 0 auto;
+}
+
+.portal {
+    display: block;
+    position: absolute;
+
+    width: 100px;
+    height: 100px;
+
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+}
+.right {
+    background-image: url('../imgs/seta-dir.png');
+}
+
+.left {
+    background-image: url('../imgs/seta-esq.png');
+}
