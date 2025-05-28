@@ -2,7 +2,7 @@ let game_state = {
     currentScene: null,
     isRunning: false,
     scene_map: {},
-    interactable_map: {},
+    portal_mapping: [], // Mapping for portal memory
     render_data: {}
 };
 
@@ -92,7 +92,10 @@ function game_LoadScene(scene) {
 function game_GotoScene(scene_id) {
     // Go to a specific scene by ID
     if (game_state.scene_map[scene_id]) {
+
+        // Load scene
         game_LoadScene(game_state.scene_map[scene_id]);
+
     } else {
         console.warn(`Scene ${scene_id} not found in scene map.`);
     }
@@ -109,13 +112,8 @@ function game_Exit() {
 
 function game_RegisterInteractable(scene, interactable) {
 
-    // Register an interactable object in the scene
-    if (!game_state.interactable_map[scene]) {
-        game_state.interactable_map[scene] = [];
-    }
-
-    game_state.interactable_map[scene].push(interactable);
-    console.log(`Interactable ${interactable} registered in scene ${scene}`);
+    game_state.scene_map[scene].addInteractable(interactable);
+    r_DrawGame(); // Initial render of the game
 }
 
 function r_DrawGame() {
@@ -142,28 +140,38 @@ function r_DrawGame() {
         }
 
         // Draw debug colliders for interactables
-        Object.keys(game_state.interactable_map).forEach(scene => {
+        Object.keys(game_state.scene_map).forEach(scene => {
 
-            if (game_state.currentScene.scene_id !== scene) return; // Only draw for the current scene
+            let interactables = game_state.scene_map[scene].interactables || [];
 
-            game_state.interactable_map[scene].forEach(interactable => {
+            if (game_state.currentScene && game_state.currentScene.scene_id !== scene) return; // Skip if not the current scene
 
-                let collider = document.createElement("div");
-                collider.style.position = "absolute";
-                collider.style.border = "1px solid red"; // Red border for visibility
-
-                collider.classList.add("collider");
+            interactables.forEach(interactable => {
 
                 let pos = m_CalculateInteractablePosition(interactable);
+                let bounding_box = interactable.bounding_box;
+
+                // Create a debug collider element
+                let collider = document.createElement("div");
+                collider.classList.add("collider");
+                collider.style.position = "absolute";
+
+                // Set collider styles
+                collider.style.border = "1px solid red"; // Red border for visibility
+
                 collider.style.left = `${pos.x}px`;
                 collider.style.top = `${pos.y}px`;
-                collider.style.width = `${interactable.bounding_box.width}px`;
-                collider.style.height = `${interactable.bounding_box.height}px`;
+                collider.style.width = `${bounding_box.width}px`;
+                collider.style.height = `${bounding_box.height}px`;
 
+                // Append to the scene
                 document.getElementById(game_state.currentScene.scene_id).appendChild(collider);
             });
         });
     }
+
+    r_UpdatePortals(); // Update portal positions
+    r_UpdateInteractables(); // Update interactables positions
 }
 
 function m_CalculateInteractablePosition(interactable) {
@@ -174,6 +182,14 @@ function m_CalculateInteractablePosition(interactable) {
         y: interactable.bounding_box.y + game_state.render_data.top
     };
 }
+
+function m_Clamp(num, min, max) {
+    return num <= min 
+      ? min 
+      : num >= max 
+        ? max 
+        : num
+  }
 
 function r_UpdatePortals() {
 
@@ -186,10 +202,6 @@ function r_UpdatePortals() {
         x: game_state.render_data.right - PORTAL_OFFSET_X,
         y: game_state.render_data.top + game_state.render_data.height / 2 - PORTAL_OFFSET_Y
     };
-    const right_trash_pos = {
-        x: game_state.render_data.right - PORTAL_OFFSET_X,
-        y: game_state.render_data.top + game_state.render_data.height / 1.4 - PORTAL_OFFSET_Y
-    };
 
     document.querySelectorAll(".portal").forEach(portal => {
         
@@ -198,14 +210,35 @@ function r_UpdatePortals() {
             portal.style.top = `${left_portal_pos.y}px`;
         }
 
-        if (portal.classList.contains("trash")) {
-            portal.style.left = `${right_trash_pos.x}px`;
-            portal.style.top = `${right_trash_pos.y}px`;
-        }
-
         if (portal.classList.contains("right")) {
             portal.style.left = `${right_portal_pos.x}px`;
             portal.style.top = `${right_portal_pos.y}px`;
+        }
+    });
+}
+
+function r_UpdateInteractables() {
+
+    // Disable all interactables initially
+    document.querySelectorAll(".interactable").forEach(element => {
+        element.style.display = "none"; 
+    });
+
+    // Update the positions of interactables based on the current scene
+    if (!game_state.currentScene) return; // No current scene
+    let interactables = game_state.currentScene.interactables || [];
+
+    interactables.forEach(interactable => {
+        let pos = m_CalculateInteractablePosition(interactable);
+        let element = document.getElementById(interactable.id);
+
+        if (element) {
+            element.style.left = `${pos.x}px`;
+            element.style.top = `${pos.y}px`;
+
+            element.style.display = "block"; // Ensure the interactable is visible
+        } else {
+            console.warn(`Interactable element with id ${interactable.id} not found.`);
         }
     });
 }
@@ -220,7 +253,6 @@ window.addEventListener("resize", () => {
     game_state.render_data.right = get_scene().offsetLeft + get_scene().offsetWidth;
 
     r_DrawGame(); // Redraw the game
-    r_UpdatePortals(); // Update portal positions    
 });
 
 // Hook mouse click events for interactables
@@ -228,7 +260,15 @@ document.addEventListener("click", (event) => {
 
     if (!game_state.currentScene) return; // No current scene
 
-    let interactables = game_state.interactable_map[game_state.currentScene.scene_id] || [];
+    // Check if outside the game area
+    if (event.clientX < game_state.render_data.left || 
+        event.clientX > game_state.render_data.right || 
+        event.clientY < game_state.render_data.top || 
+        event.clientY > game_state.render_data.bottom) {
+        return; // Click is outside the game area
+    }
+
+    let interactables = game_state.currentScene.interactables || [];
 
     interactables.forEach(interactable => {
 

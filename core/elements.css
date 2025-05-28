@@ -2,21 +2,28 @@ html, body {
     height: 100%;
     margin: 0;
     display: flex;
-    justify-content: center;  /* Horizontally center */
-    align-items: center;      /* Vertically center */
-    background-color: white;  /* Optional: fill background */
+    justify-content: center;  
+    align-items: center;  
+    background-color: white;
 }
 
 #scene {
     width: 1280px;
     height: 720px;
-    background-image: url('haii nani ga suki?.jpg');
+    background-image: url('../imgs/kitchen.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
     background-color: black; 
     position: relative;
     border: 2px solid #000;
+    margin: 0 auto;
+}
+
+.interactable {
+    background-size: contain !important;
+    background-repeat: no-repeat;
+    background-position: center center !important;
     margin: 0 auto;
 }
 
@@ -38,9 +45,4 @@ html, body {
 
 .left {
     background-image: url('../imgs/seta-esq.png');
-}
-
-.trash {
-    
-    background-image: url('../imgs/trash.png');
 }

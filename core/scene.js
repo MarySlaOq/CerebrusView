@@ -2,6 +2,7 @@ class Scene {
 
     scene_id;
     image_file;
+    interactables = [];
 
     constructor(id){
         
@@ -19,5 +20,11 @@ class Scene {
             console.warn(`Scene ${id} does not have an image element.`);
             this.image_file = null; // No image found
         }
+    }
+
+    addInteractable(interactable) {
+        
+        this.interactables.push(interactable);
+        console.log(`Interactable ${interactable} registered in scene ${this.scene_id}`);
     }
 }
