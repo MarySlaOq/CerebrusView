@@ -186,12 +186,21 @@ function r_UpdatePortals() {
         x: game_state.render_data.right - PORTAL_OFFSET_X,
         y: game_state.render_data.top + game_state.render_data.height / 2 - PORTAL_OFFSET_Y
     };
+    const right_trash_pos = {
+        x: game_state.render_data.right - PORTAL_OFFSET_X,
+        y: game_state.render_data.top + game_state.render_data.height / 1.4 - PORTAL_OFFSET_Y
+    };
 
     document.querySelectorAll(".portal").forEach(portal => {
         
         if (portal.classList.contains("left")) {
             portal.style.left = `${left_portal_pos.x}px`;
             portal.style.top = `${left_portal_pos.y}px`;
+        }
+
+        if (portal.classList.contains("trash")) {
+            portal.style.left = `${right_trash_pos.x}px`;
+            portal.style.top = `${right_trash_pos.y}px`;
         }
 
         if (portal.classList.contains("right")) {
