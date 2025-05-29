@@ -25,6 +25,7 @@ html, body {
     background-repeat: no-repeat;
     background-position: center center !important;
     margin: 0 auto;
+    cursor: pointer;
 }
 
 .portal {

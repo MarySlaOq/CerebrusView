@@ -5,15 +5,18 @@ document.addEventListener("DOMContentLoaded", () => {
     Game.settings.debug_colliders = true; // Enable debug colliders
     Game.game_Init();
     
-    // Add trashcan
-    let trashcan = new Interactable(900, 470, 320, 320, () => {
+
+    // Add interactables
+
+    // Add trashcan (lados esq/right, up/down, hitbox sides size, hitbox height size )
+    let trashcan = new Interactable(700, 500, 130, 140, () => {
         window.open("countdown.html", '_self'); 
     });
     trashcan.addSprite("imgs/trash.png"); // Add sprite to the trashcan interactable
     
     Game.game_RegisterInteractable("Kitchen", trashcan);
     
-    // Add interactables
+    
     // Opeanable fridge
     Game.game_RegisterInteractable("Fridge", new Interactable(500, 70, 320, 630, () => {
         console.log("Fridge opened");
