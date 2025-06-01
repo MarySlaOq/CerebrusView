@@ -12,6 +12,7 @@
 
 </head>
 <body>
+    <audio loop autoplay><source src="sounds/music1.mp3" type="audio/mpeg">Your browser does not support the audio element.</audio>
     <!---
     <div class="navbar">
         <a href="index.html" class="logo">Cerebrus yay</a>
@@ -32,11 +33,19 @@
             <div class="scene-content">
                 <!-- Scene background -->
                 <img src="imgs/kitchen.png" alt="">
-                <span href="Fridge" class="portal right"></span>
+                 
+                <audio id="shotGun" src="sounds/shotgun.mp3" preload="auto" ></audio><span href="LivingRoom" onclick="document.getElementById('shotGun').play()" class="portal right"></span>
                 <span href="Cabinet" class="portal left"></span>
             </div>
         </div>
 
+        <div id="LivingRoom" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/livingroom.png" alt="">
+                <audio id="button" src="sounds/button.wav" preload="auto" ></audio><span href="Kitchen" onclick="document.getElementById('button').play()" class="portal left"></span>
+            </div>
+        </div>
 
         <div id="Fridge" class="scene">
             <div class="scene-content">

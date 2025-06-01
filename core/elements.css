@@ -8,8 +8,8 @@ html, body {
 }
 
 #scene {
-    width: 1280px;
-    height: 720px;
+    width: 1901px;
+    height: 851px;
     background-image: url('../imgs/kitchen.png');
     background-size: contain;
     background-repeat: no-repeat;
