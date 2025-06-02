@@ -8,7 +8,9 @@ let game_state = {
 
 let settings = {
     debug_colliders: false,
-    aspect_ration: 16 / 9,
+    overflow_colour: "black",
+    enable_overflow_collision: false, // Should collidefrs outside the game area be enabled?
+    aspect_ratio: 16 / 9,
 }; 
 
 const PORTAL_OFFSET_X = 150; // Offset for portal positioning
@@ -18,38 +20,13 @@ const get_scene = () => {
     return document.getElementById("scene");
 }
 
-function m_CalculateScreenSize() {
-
-    const monitor_width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-    const monitor_height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-
-    const aspect_ratio = settings.aspect_ration || 16 / 9;
-    let width = monitor_width;
-    let height = monitor_height;
-    if (width / height > aspect_ratio) {
-        width = height * aspect_ratio;
-    } else {
-        height = width / aspect_ratio;
-    }
-
-    game_state.render_data.width = width;
-    game_state.render_data.height = height;
-}
-
 function game_Init() {
 
     // Initialize game settings
     console.log("Game initialized");
     game_state.isRunning = true;
 
-    m_CalculateScreenSize(); // Calculate initial screen size
-    game_state.render_data = {
-        left: get_scene().offsetLeft,
-        right: get_scene().offsetLeft + get_scene().offsetWidth,
-        top: get_scene().offsetTop,
-        bottom: get_scene().offsetTop + get_scene().offsetHeight
-    };
-
+    r_UpdateScreenSize();
     console.log(`Render data: ${JSON.stringify(game_state.render_data)}`);
 
     document.querySelectorAll(".scene").forEach(scene => {
@@ -193,6 +170,55 @@ function r_DrawGame() {
     r_UpdateInteractables(); // Update interactables positions
 }
 
+function r_UpdateScreenSize() {
+
+    const screen_size = m_CalculateScreenSize();
+    game_state.render_data = {
+        width: screen_size.width,
+        height: screen_size.height,
+        left: 0,
+        right: screen_size.width,
+        top: 0,
+        bottom: screen_size.height
+    };
+
+    // Update the game container size
+    const game_container = get_scene();
+    game_container.style.width = `${game_state.render_data.width}px`;
+    game_container.style.height = `${game_state.render_data.height}px`;
+    game_container.style.left = `${game_state.render_data.left}px`;
+    game_container.style.top = `${game_state.render_data.top}px`;
+
+    // Set the background color for overflow areas if enabled
+    if (settings.enable_overflow_collision) {
+        game_container.style.backgroundColor = settings.overflow_colour;
+    }
+
+    // Update the interactable positions and scale
+    
+}
+
+function m_CalculateScreenSize() {
+
+    const monitor_width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    const monitor_height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    
+    // Calculate the aspect ratio based on the settings
+    const aspect_ratio = settings.aspect_ratio || (16 / 9);
+    if (aspect_ratio <= 0) {
+        console.error("Invalid aspect ratio. Using default 16:9.");
+        return { width: monitor_width, height: monitor_height };
+    }
+
+    let width = monitor_height * aspect_ratio;
+    let height = monitor_width / aspect_ratio;
+
+    return {
+        width: m_Clamp(width, 300, monitor_width), // Clamp width to a minimum of 300px
+        height: m_Clamp(height, 300, monitor_height) // Clamp height to a minimum of 300px
+    };
+}
+
 function m_CalculateInteractablePosition(interactable) {
 
     // Calculate the position of an interactable based on its bounding box
@@ -266,11 +292,7 @@ function r_UpdateInteractables() {
 window.addEventListener("resize", () => {
 
     // Update render data on window resize
-    game_state.render_data.width = get_scene().offsetWidth;
-    game_state.render_data.height = get_scene().offsetHeight;
-    game_state.render_data.left = get_scene().offsetLeft;
-    game_state.render_data.right = get_scene().offsetLeft + get_scene().offsetWidth;
-
+    r_UpdateScreenSize();
     r_DrawGame(); // Redraw the game
 });
 
@@ -280,16 +302,19 @@ document.addEventListener("click", (event) => {
     if (!game_state.currentScene) return; // No current scene
 
     // Check if outside the game area
-    if (event.clientX < game_state.render_data.left || 
-        event.clientX > game_state.render_data.right || 
-        event.clientY < game_state.render_data.top || 
-        event.clientY > game_state.render_data.bottom) {
-        return; // Click is outside the game area
-    }
+    if (!settings.enable_overflow_collision)
+        if (event.clientX < game_state.render_data.left || 
+            event.clientX > game_state.render_data.right || 
+            event.clientY < game_state.render_data.top || 
+            event.clientY > game_state.render_data.bottom) {
+            return; // Click is outside the game area
+        }
 
     let interactables = game_state.currentScene.interactables || [];
 
     interactables.forEach(interactable => {
+
+        if (!interactable.action) return;
 
         let pos = m_CalculateInteractablePosition(interactable);
         let bounding_box = interactable.bounding_box;

@@ -3,7 +3,7 @@ import Game from './core/core.js';
 document.addEventListener("DOMContentLoaded", () => {
 
     Game.settings.debug_colliders = true; // Enable debug colliders
-    Game.settings.aspect_ratio = 16 / 10; // Set aspect ratio to 16:9
+    Game.settings.aspect_ratio = 16/9; // Set aspect ratio to 16:9
 
     Game.game_Init();
     
@@ -11,23 +11,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add interactables (lados esq/right, up/down, hitbox sides size, hitbox height size )
 
     // Add fridge 
-        
-        //img
-        let fridgeimg = new Interactable(930, 195, 500, 500, () => {
-             
-        });
-        //hitbox
-        let fridge = new Interactable(1070, 250, 210, 400, () => {
-        window.open("countdown.html", '_self'); 
-        });
-
-        fridgeimg.addSprite("imgs/Kitchen_fridge.png"); // Add sprite to the trashcan interactable
-        Game.game_RegisterInteractable("Kitchen", fridgeimg);
-        Game.game_RegisterInteractable("Kitchen", fridge);
-        
     
+    //img
+    let fridgeimg = new Interactable(930, 195, 500, 500);
+    //hitbox
+    let fridge = new Interactable(1070, 250, 210, 400, () => {
+    window.open("countdown.html", '_self'); 
+    });
 
-
+    fridgeimg.addSprite("imgs/Kitchen_fridge.png"); // Add sprite to the trashcan interactable
+    Game.game_RegisterInteractable("Kitchen", fridgeimg);
+    Game.game_RegisterInteractable("Kitchen", fridge);
 
     // Add scenes  hitbox = lados esq/right, up/down, hitbox sides size, hitbox height size )
     // Opeanable fridge

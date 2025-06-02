@@ -2,6 +2,7 @@ class Interactable {
 
     id;
     bounding_box;
+    original_bounding_box; // Store original bounding box for comparing scalars
     action;
     sprite;
 
@@ -14,6 +15,7 @@ class Interactable {
             height: height
         };
 
+        this.original_bounding_box = { ...this.bounding_box };
         this.action = action;
 
         // Create element
@@ -28,6 +30,11 @@ class Interactable {
         element.style.width = `${width}px`;
         element.style.height = `${height}px`;
         element.style.zIndex = "1000"; 
+
+        if (action == null) {
+            // Deactivate pointer events if no action is provided
+            element.style.pointerEvents = "none";
+        }
 
         // Append to the document body or a specific container
         document.body.appendChild(element);
@@ -44,6 +51,21 @@ class Interactable {
             element.style.backgroundSize = "cover"; // Cover the entire element
             element.style.backgroundPosition = "center"; // Center the image
 
+        } else {
+            console.warn(`Element with id ${this.id} not found.`);
+        }
+    }
+
+    scale(scalar) {
+
+        // Scale the bounding box
+        this.bounding_box.width = this.original_bounding_box.width * scalar;
+        this.bounding_box.height = this.original_bounding_box.height * scalar;
+
+        const element = document.getElementById(this.id);
+        if (element) {
+            element.style.width = `${this.bounding_box.width}px`;
+            element.style.height = `${this.bounding_box.height}px`;
         } else {
             console.warn(`Element with id ${this.id} not found.`);
         }
