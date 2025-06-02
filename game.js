@@ -10,18 +10,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add trashcan 
         //hitbox
-    let fridgehit = new Interactable(930, 195, 300, 500, () => {
+        let fridge = new Interactable(1050, 250, 250, 400, () => {
         window.open("countdown.html", '_self'); 
-    });
+        });
         //img
-    let fridge = new Interactable(930, 195, 500, 500, () => {
-    });
-    fridge.addSprite("imgs/Kitchen_fridge.png"); // Add sprite to the trashcan interactable
-    fridgehit.addSprite(""); // Add sprite to the trashcan interactable
-    Game.game_RegisterInteractable("Kitchen", fridge);
+        let fridgeimg = new Interactable(930, 195, 500, 500, () => {
+             
+        });
+        fridgeimg.addSprite("imgs/Kitchen_fridge.png"); // Add sprite to the trashcan interactable
+        Game.game_RegisterInteractable("Kitchen", fridge);
     
+
+
+
     // Add scenes  hitbox = lados esq/right, up/down, hitbox sides size, hitbox height size )
-    
     // Opeanable fridge
     Game.game_RegisterInteractable("Fridge", new Interactable(500, 70, 320, 630, () => {
         console.log("Fridge opened");
