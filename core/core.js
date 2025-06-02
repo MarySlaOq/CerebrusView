@@ -7,7 +7,8 @@ let game_state = {
 };
 
 let settings = {
-    debug_colliders: false
+    debug_colliders: false,
+    aspect_ration: 16 / 9,
 }; 
 
 const PORTAL_OFFSET_X = 150; // Offset for portal positioning
@@ -17,14 +18,32 @@ const get_scene = () => {
     return document.getElementById("scene");
 }
 
+function m_CalculateScreenSize() {
+
+    const monitor_width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    const monitor_height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+    const aspect_ratio = settings.aspect_ration || 16 / 9;
+    let width = monitor_width;
+    let height = monitor_height;
+    if (width / height > aspect_ratio) {
+        width = height * aspect_ratio;
+    } else {
+        height = width / aspect_ratio;
+    }
+
+    game_state.render_data.width = width;
+    game_state.render_data.height = height;
+}
+
 function game_Init() {
 
     // Initialize game settings
     console.log("Game initialized");
     game_state.isRunning = true;
+
+    m_CalculateScreenSize(); // Calculate initial screen size
     game_state.render_data = {
-        width: get_scene().offsetWidth,
-        height: get_scene().offsetHeight,
         left: get_scene().offsetLeft,
         right: get_scene().offsetLeft + get_scene().offsetWidth,
         top: get_scene().offsetTop,

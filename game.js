@@ -3,6 +3,8 @@ import Game from './core/core.js';
 document.addEventListener("DOMContentLoaded", () => {
 
     Game.settings.debug_colliders = true; // Enable debug colliders
+    Game.settings.aspect_ratio = 16 / 10; // Set aspect ratio to 16:9
+
     Game.game_Init();
     
 
