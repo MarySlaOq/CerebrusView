@@ -10,18 +10,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add interactables (lados esq/right, up/down, hitbox sides size, hitbox height size )
 
-    // Add fridge 
-    
-    //img
-    let fridgeimg = new Interactable(930, 195, 500, 500);
-    //hitbox
-    let fridge = new Interactable(1070, 250, 210, 400, () => {
-    window.open("countdown.html", '_self'); 
-    });
+        // Add fridge 
+            //img
+            let fridgeimg = new Interactable(930, 190, 500, 500);
+            //hitbox
+            let fridge = new Interactable(1070, 250, 210, 400, () => {
+            window.open("countdown.html", '_self'); 
+            });
 
-    fridgeimg.addSprite("imgs/Kitchen_fridge.png"); // Add sprite to the trashcan interactable
-    Game.game_RegisterInteractable("Kitchen", fridgeimg);
-    Game.game_RegisterInteractable("Kitchen", fridge);
+            fridgeimg.addSprite("imgs/Kitchen_fridge.png"); // Add sprite to the trashcan interactable
+            Game.game_RegisterInteractable("Kitchen", fridgeimg);
+            Game.game_RegisterInteractable("Kitchen", fridge);
+
+        // Add cabinet 
+            //img
+            let cabinetimg = new Interactable(790, 400, 300, 300);
+            //hitbox
+            let cabinet = new Interactable(809, 420, 205, 240, () => {
+            window.open("countdown.html", '_self'); 
+            });
+
+            cabinetimg.addSprite("imgs/Kitchen_cabinet.png"); // Add sprite to the trashcan interactable
+            Game.game_RegisterInteractable("Kitchen", cabinetimg);
+            Game.game_RegisterInteractable("Kitchen", cabinet);
+
+        // Add PETBOWL 
+            //img
+            let bowlimg = new Interactable(1230, 630, 260, 260);
+            //hitbox
+            let bowl = new Interactable(1260, 699, 198, 123, () => {
+            window.open("countdown.html", '_self'); 
+            });
+
+            bowlimg.addSprite("imgs/Kitchen_foodwater.png"); // Add sprite to the trashcan interactable
+            Game.game_RegisterInteractable("Kitchen", bowlimg);
+            Game.game_RegisterInteractable("Kitchen", bowl);
 
     // Add scenes  hitbox = lados esq/right, up/down, hitbox sides size, hitbox height size )
     // Opeanable fridge
