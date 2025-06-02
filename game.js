@@ -9,12 +9,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add interactables (lados esq/right, up/down, hitbox sides size, hitbox height size )
 
     // Add trashcan 
-    let trashcan = new Interactable(995, 550, 200, 200, () => {
+        //hitbox
+    let fridgehit = new Interactable(930, 195, 300, 500, () => {
         window.open("countdown.html", '_self'); 
     });
-    trashcan.addSprite("imgs/trash.png"); // Add sprite to the trashcan interactable
-    
-    Game.game_RegisterInteractable("Kitchen", trashcan);
+        //img
+    let fridge = new Interactable(930, 195, 500, 500, () => {
+    });
+    fridge.addSprite("imgs/Kitchen_fridge.png"); // Add sprite to the trashcan interactable
+    fridgehit.addSprite(""); // Add sprite to the trashcan interactable
+    Game.game_RegisterInteractable("Kitchen", fridge);
     
     // Add scenes  hitbox = lados esq/right, up/down, hitbox sides size, hitbox height size )
     
