@@ -15,20 +15,25 @@ document.addEventListener("DOMContentLoaded", () => {
     //img
     let fridgeimg = new Interactable(960, 235, 580, 580);
     //hitbox
-    let fridge = new Interactable(1100, 290, 290, 490, () => {
+    let fridge = new Interactable(1130, 290, 260, 330, () => {
+        Game.game_GotoScene("Fridge");
+    });
+    let fridge2 = new Interactable(1130, 450, 140, 300, () => {
         Game.game_GotoScene("Fridge");
     });
 
     fridgeimg.addSprite("imgs/Kitchen_fridge.png"); // Add sprite to the trashcan interactable
     Game.game_RegisterInteractable("Kitchen", fridgeimg);
     Game.game_RegisterInteractable("Kitchen", fridge);
+    Game.game_RegisterInteractable("Kitchen", fridge2);
 
 // Add cabinet 
     //img
     let cabinetimg = new Interactable(770, 478, 300, 300);
     //hitbox
     let cabinet = new Interactable(789, 500, 203, 240, () => {
-    window.open("countdown.html", '_self'); 
+        //window.open("countdown.html", '_self'); 
+        Game.game_GotoScene("cabinet");
     });
 
     cabinetimg.addSprite("imgs/Kitchen_cabinet.png"); // Add sprite to the trashcan interactable
@@ -47,6 +52,20 @@ document.addEventListener("DOMContentLoaded", () => {
     Game.game_RegisterInteractable("Kitchen", bowlimg);
     Game.game_RegisterInteractable("Kitchen", bowl);
 
+// Add trashcan 
+    //img
+    let trashimg = new Interactable(1250, 610, 200, 200);
+    //hitbox
+    let trash = new Interactable(1290, 620, 120, 160, () => {
+        Game.game_GotoScene("trash");
+    });
+
+    trashimg.addSprite("imgs/Kitchen_trash.png"); // Add sprite to the trashcan interactable
+    Game.game_RegisterInteractable("Kitchen", trashimg);
+    Game.game_RegisterInteractable("Kitchen", trash);
+
+
+
     // Add scenes  hitbox = lados esq/right, up/down, hitbox sides size, hitbox height size )
     // fridge
     Game.game_RegisterInteractable("Fridge", new Interactable(715, 100, 480, 950, () => {
@@ -54,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
         Game.game_GotoScene("FridgeOpen");
     }));
     
-    Game.game_RegisterInteractable("FridgeOpen", new Interactable(500, 180, 800, 950, () => {
+    Game.game_RegisterInteractable("FridgeOpen", new Interactable(500, 100, 800, 1100, () => {
         console.log("Fridge closed");
         Game.game_GotoScene("FridgeMessy");
     }));
@@ -63,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Fridge closed");
         Game.game_GotoScene("Kitchen");
     }));
-    //openable cabinet
+    //openable test cabinet
     
     Game.game_RegisterInteractable("Cabinet", new Interactable(800, 300, 300, 200, () => {
         console.log("Cabinet opened");
@@ -87,6 +106,54 @@ document.addEventListener("DOMContentLoaded", () => {
         Game.game_GotoScene("Kitchen");
     }));
 
+    //trash
+
+    Game.game_RegisterInteractable("trash", new Interactable(725, 260, 450, 680, () => {
+        console.log("Cabinet opened");
+        Game.game_GotoScene("trashOpen");
+    }));
+    
+    Game.game_RegisterInteractable("trashOpen", new Interactable(725, 260, 450, 680, () => {
+        console.log("Cabinet closed");
+        Game.game_GotoScene("trashSniff");
+    }));
+
+    Game.game_RegisterInteractable("trashSniff", new Interactable(725, 400, 780, 680, () => {
+        console.log("Cabinet closed");
+        Game.game_GotoScene("trashBroken");
+    }));
+
+    Game.game_RegisterInteractable("trashBroken", new Interactable(725, 260, 450, 680, () => {
+        console.log("Cabinet closed");
+        Game.game_GotoScene("Kitchen");
+    }));
+
+    //openable cabinet
+    
+    Game.game_RegisterInteractable("cabinet", new Interactable(600, 400, 810, 560, () => {
+        console.log("Cabinet opened");
+        Game.game_GotoScene("cabinetOpening");
+    }));
+    
+    Game.game_RegisterInteractable("cabinetOpening", new Interactable(830, 400, 500, 540, () => {
+        console.log("Cabinet closed");
+        Game.game_GotoScene("cabinetGroceries");
+    }));
+
+    Game.game_RegisterInteractable("cabinetGroceries", new Interactable(600, 400, 810, 560, () => {
+        console.log("Cabinet opened");
+        Game.game_GotoScene("cabinetEating");
+    }));
+    
+    Game.game_RegisterInteractable("cabinetEating", new Interactable(830, 400, 500, 540, () => {
+        console.log("Cabinet closed");
+        Game.game_GotoScene("cabinMessy");
+    }));
+
+    Game.game_RegisterInteractable("cabinMessy", new Interactable(600, 400, 810, 560, () => {
+        console.log("Cabinet closed");
+        Game.game_GotoScene("Kitchen");
+    }));
 });
 
 
