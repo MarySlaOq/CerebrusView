@@ -3,8 +3,14 @@ let game_state = {
     isRunning: false,
     scene_map: {},
     portal_mapping: [], // Mapping for portal memory
-    render_data: {}
+    render_data: {},
+    inventory: {}
 };
+
+const scopes = Object.freeze({
+    SCENE: "scene",
+    ALL: "all"
+});
 
 let settings = {
     debug_colliders: false,
@@ -32,10 +38,28 @@ function game_Init() {
     // Set up the game container
     r_UpdateScreenSize();
 
+    // Initialize scenes
+    game_InitScenes();
+
+    // Add event listeners to portals
+    game_InitPortals();
+}
+
+function game_InitScenes() {
+
+    // Add the root scene
+    let root_scene = new Scene("root", false);
+    game_state.scene_map["root"] = root_scene;
+
     document.querySelectorAll(".scene").forEach(scene => {
 
         let is_active = scene.classList.contains("active");
         scene.style.display = "none";
+
+        if (scene.id == "root") {
+            console.error("You can't create a scene with the id 'root'. Please use a different id.")
+            return;
+        }
 
         // Make scene object
         let scene_obj = new Scene(scene.id);
@@ -45,9 +69,6 @@ function game_Init() {
         if (is_active) 
             game_LoadScene(scene_obj);
     });
-
-    // Add event listeners to portals
-    game_InitPortals();
 }
 
 // Define portal information
@@ -64,8 +85,6 @@ const portal_data = {
         sprite: "core/res/ArrowRight.png",
         scale: 0.40,
     }
-    
-    
 };
 
 function game_InitPortals() {
@@ -198,9 +217,9 @@ function r_DrawColliders() {
     // Draw debug colliders for interactables
     Object.keys(game_state.scene_map).forEach(scene => {
 
-        let interactables = game_state.scene_map[scene].interactables || [];
-
         if (game_state.currentScene && game_state.currentScene.scene_id !== scene) return; // Skip if not the current scene
+
+        let interactables = game_GetAllColliders(scopes.SCENE);
 
         interactables.forEach(interactable => {
 
@@ -249,7 +268,7 @@ function r_UpdateScreenSize() {
     game_container.style.top = `${game_state.render_data.top}px`;
 
     // Update the interactable positions and scale
-    let interactables = game_state.currentScene?.interactables || [];
+    let interactables = game_GetAllColliders();
     let boundingLeft = get_scene().getBoundingClientRect().left;
     let boundingTop = get_scene().getBoundingClientRect().top;
 
@@ -264,6 +283,26 @@ function r_UpdateScreenSize() {
             game_state.render_data.top + boundingTop
         );
     });
+}
+
+function game_GetAllColliders(scope = scopes.SCENE) {
+
+    let colliders = [];
+
+    if (scope === scopes.SCENE && game_state.currentScene) {
+        
+        // Get colliders only from the current scene
+        colliders = game_state.currentScene?.interactables || [];
+
+    } else if (scope === scopes.ALL) {
+
+        // Get colliders from all scenes
+        for (const scene_id in game_state.scene_map) {
+            colliders.push(...game_state.scene_map[scene_id].getColliders());
+        }
+    }
+
+    return new Set(colliders);
 }
 
 function m_CalculateScreenSize() {
@@ -319,7 +358,7 @@ function r_UpdateInteractables() {
 
     // Update the positions of interactables based on the current scene
     if (!game_state.currentScene) return; // No current scene
-    let interactables = game_state.currentScene.interactables || [];
+    let interactables = game_GetAllColliders(scopes.SCENE);
 
     interactables.forEach(interactable => {
         let pos = m_CalculateInteractablePosition(interactable);
@@ -336,6 +375,36 @@ function r_UpdateInteractables() {
     });
 
     r_UpdateScreenSize();
+}
+
+// Inventory definitions
+function i_AddItem(item) {
+
+    if (!game_state.inventory[item]) {
+        game_state.inventory[item] = 0; // Initialize item count if not present
+    }
+
+    game_state.inventory[item]++;
+    console.log(`Added ${item} to inventory. Total: ${game_state.inventory[item]}`);
+}
+
+function i_RemoveItem(item, count = 1) {
+
+    if (game_state.inventory[item]) {
+        game_state.inventory[item] -= count;
+
+        if (game_state.inventory[item] <= 0) {
+            delete game_state.inventory[item];
+        }
+
+        console.log(`Removed ${count} ${item}(s) from inventory. Remaining: ${game_state.inventory[item] || 0}`);
+    } else {
+        console.warn(`Item ${item} not found in inventory.`);
+    }
+}
+
+function i_GetItem(item) {
+    return game_state.inventory[item] || 0;
 }
 
 // Hook window resize
@@ -361,7 +430,7 @@ document.addEventListener("click", (event) => {
         }
     }
 
-    let interactables = game_state.currentScene.interactables || [];
+    let interactables = game_GetAllColliders(scopes.SCENE);
 
     interactables.forEach(interactable => {
 
@@ -387,5 +456,10 @@ export default {
     game_GotoScene,
     game_Exit,
     game_RegisterInteractable,
-    settings
+    settings,
+    inventory: {
+        i_AddItem,
+        i_RemoveItem,
+        i_GetItem
+    }
 }
