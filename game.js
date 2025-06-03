@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let bowlimg = new Interactable(1270, 710, 260, 260);
     //hitbox
     let bowl = new Interactable(1300, 780, 198, 123, () => {
-    window.open("countdown.html", '_self'); 
+        Game.game_GotoScene("petbowl");
     });
 
     bowlimg.addSprite("imgs/Kitchen_foodwater.png"); // Add sprite to the trashcan interactable
@@ -72,6 +72,17 @@ document.addEventListener("DOMContentLoaded", () => {
         Game.game_GotoScene("Cabinet");
     }));
 
+    //petbowl
+
+    Game.game_RegisterInteractable("petbowl", new Interactable(600, 180, 750, 750, () => {
+        console.log("Cabinet opened");
+        Game.game_GotoScene("petbowl-eat");
+    }));
+    
+    Game.game_RegisterInteractable("petbowl-eat", new Interactable(320, 250, 1400, 850, () => {
+        console.log("Cabinet closed");
+        Game.game_GotoScene("Cabinet");
+    }));
 });
 
 
