@@ -16,9 +16,26 @@ document.addEventListener("DOMContentLoaded", () => {
     let fridgeimg = new Interactable(960, 235, 580, 580);
     //hitbox
     let fridge = new Interactable(1130, 290, 260, 330, () => {
+        // Check if the fridge has been opened before
+        if (Game.inventory.i_GetItem("fridge_opened")) {
+            return;
+        }
+        fridgeimg.addSprite("imgs/Kitchen_fridge-open.png"); // Add sprite to the trashcan interactable
+        // Savee in the inventory that the cabinet has been opened
+        Game.inventory.i_AddItem("fridge_opened");
+        
         Game.game_GotoScene("Fridge");
     });
     let fridge2 = new Interactable(1130, 450, 140, 300, () => {
+        
+        // Check if the fridge has been opened before
+        if (Game.inventory.i_GetItem("fridge_opened")) {
+            return;
+        }
+
+        // Savee in the inventory that the cabinet has been opened
+        Game.inventory.i_AddItem("fridge_opened");
+        
         Game.game_GotoScene("Fridge");
     });
 
@@ -35,10 +52,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Check if the fridge has been opened before
         if (Game.inventory.i_GetItem("cabinet_opened")) {
+            window.alert("You already opened this");
             return;
         }
-
-        // Svae in the inventory that the cabinet has been opened
+        cabinetimg.addSprite("imgs/Kitchen_cabinet-open.png"); // Add sprite to the trashcan interactable
+        // Savee in the inventory that the cabinet has been opened
         Game.inventory.i_AddItem("cabinet_opened");
 
         //window.open("countdown.html", '_self'); 
@@ -53,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
     //img
     let bowlimg = new Interactable(1270, 710, 260, 260);
     //hitbox
-    let bowl = new Interactable(1300, 780, 198, 123, () => {
+    let bowl = new Interactable(1300, 780, 198, 123, () => {        
         Game.game_GotoScene("petbowl");
     });
 
@@ -66,16 +84,27 @@ document.addEventListener("DOMContentLoaded", () => {
     let trashimg = new Interactable(1250, 610, 200, 200);
     //hitbox
     let trash = new Interactable(1290, 620, 120, 160, () => {
+        // Check if the fridge has been opened before
+        if (Game.inventory.i_GetItem("trash_opened")) {  
+            window.alert("You already opened this");          
+            return;
+        }
+        
+        trashimg.addSprite("imgs/Kitchen_trash-open.png"); // Add sprite to the trashcan interactable
+        // Savee in the inventory that the cabinet has been opened
+        Game.inventory.i_AddItem("trash_opened");
+        
         Game.game_GotoScene("trash");
     });
 
     trashimg.addSprite("imgs/Kitchen_trash.png"); // Add sprite to the trashcan interactable
     Game.game_RegisterInteractable("Kitchen", trashimg);
+    
     Game.game_RegisterInteractable("Kitchen", trash);
 
 
 
-    // Add scenes  hitbox = lados esq/right, up/down, hitbox sides size, hitbox height size )
+// Add scenes  hitbox = lados esq/right, up/down, hitbox sides size, hitbox height size )
     // fridge
     Game.game_RegisterInteractable("Fridge", new Interactable(715, 100, 480, 950, () => {
 
