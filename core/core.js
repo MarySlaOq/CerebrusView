@@ -55,15 +55,17 @@ const portal_data = {
     left: {
         x: 0,
         y: settings.target_resolution.height / 2, 
-        sprite: "core/res/portal_left.png",
-        scale : 0.12,
+        sprite: "core/res/ArrowLeft.png",
+        scale : 0.40,
     },
     right: {
         x: settings.target_resolution.width, 
         y: settings.target_resolution.height / 2,
-        sprite: "core/res/portal_right.png",
-        scale: 0.12,
+        sprite: "core/res/ArrowRight.png",
+        scale: 0.40,
     }
+    
+    
 };
 
 function game_InitPortals() {
