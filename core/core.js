@@ -18,8 +18,12 @@ let settings = {
     target_resolution: { width: 1920, height: 1080 },
 }; 
 
-const get_scene = () => {
+const scene = () => {
     return document.getElementById("scene");
+}
+
+const root = () => {
+    return game_state.scene_map["root"];
 }
 
 function game_Init() {
@@ -181,6 +185,9 @@ function game_Exit() {
 
 function game_RegisterInteractable(scene, interactable) {
 
+    // Default to root scene if no scene is specified
+    if (scene == undefined) scene = "root";
+
     game_state.scene_map[scene].addInteractable(interactable);
     r_DrawGame(); // Initial render of the game
 }
@@ -194,7 +201,7 @@ function r_DrawGame() {
         scene_element.style.display = "block"; // Show the current scene
         
         // Set backgroud image
-        get_scene().style.backgroundImage = `url(${game_state.currentScene.image_file})`;
+        scene().style.backgroundImage = `url(${game_state.currentScene.image_file})`;
 
     } else {
         console.warn("No current scene to render.");
@@ -261,7 +268,7 @@ function r_UpdateScreenSize() {
     game_state.render_data.height = m_Clamp(game_state.render_data.height, 300, window.innerHeight);
 
     // Update the game container size
-    const game_container = get_scene();
+    const game_container = scene();
     game_container.style.width = `${game_state.render_data.width}px`;
     game_container.style.height = `${game_state.render_data.height}px`;
     game_container.style.left = `${game_state.render_data.left}px`;
@@ -269,8 +276,8 @@ function r_UpdateScreenSize() {
 
     // Update the interactable positions and scale
     let interactables = game_GetAllColliders();
-    let boundingLeft = get_scene().getBoundingClientRect().left;
-    let boundingTop = get_scene().getBoundingClientRect().top;
+    let boundingLeft = scene().getBoundingClientRect().left;
+    let boundingTop = scene().getBoundingClientRect().top;
 
     interactables.forEach(interactable => {
 
@@ -302,6 +309,9 @@ function game_GetAllColliders(scope = scopes.SCENE) {
         }
     }
 
+    // Add root colliders
+    colliders.push(...root()?.interactables || []);
+
     return new Set(colliders);
 }
 
@@ -331,8 +341,8 @@ function m_CalculateScreenSize() {
 
 function m_CalculateInteractablePosition(interactable) {
 
-    let boundingLeft = get_scene().getBoundingClientRect().left;
-    let boundingTop = get_scene().getBoundingClientRect().top;
+    let boundingLeft = scene().getBoundingClientRect().left;
+    let boundingTop = scene().getBoundingClientRect().top;
 
     // Calculate the position of an interactable based on its bounding box
     return {
@@ -423,7 +433,7 @@ document.addEventListener("click", (event) => {
     // Check if outside the game area
     if (!settings.enable_overflow_collision) {
 
-        let scene_box = get_scene().getBoundingClientRect();
+        let scene_box = scene().getBoundingClientRect();
         if (event.clientX < scene_box.left || event.clientX > scene_box.right ||
             event.clientY < scene_box.top || event.clientY > scene_box.bottom) {
             return; 

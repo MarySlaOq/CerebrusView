@@ -6,7 +6,27 @@ document.addEventListener("DOMContentLoaded", () => {
     Game.settings.target_resolution = { width: 1920, height: 1080 }; // Set aspect ratio to 16:9
 
     Game.game_Init();
-    
+
+    const timer = new Interactable(0, 0, 150, 100);
+    const start_time = 69;
+    let time = start_time;
+
+    timer.addHTML("<p id='timer'>00:00</p>");
+
+    // timer code
+    setInterval(() => {
+        const timerElement = document.getElementById("timer");
+        if (timerElement) {
+            
+            const minutes = Math.floor(time / 60);
+            const seconds = time % 60;
+            timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            time--;
+        }
+    }, 1000); // Update every second
+
+    Game.game_RegisterInteractable(undefined, timer);
 
     // Add interactables (lados esq/right, up/down, hitbox sides size, hitbox height size )
 

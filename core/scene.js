@@ -3,7 +3,6 @@ class Scene {
     scene_id;
     image_file;
     interactables = [];
-    tags = [];
 
     constructor(id, parse=true){
         
@@ -12,12 +11,6 @@ class Scene {
 
         if (parse)
             this.parseElement();
-    }
-
-    addTag(tag) {
-        if (!this.tags.includes(tag)) {
-            this.tags.push(tag);
-        }
     }
 
     parseElement() {

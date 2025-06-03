@@ -56,6 +56,17 @@ class Interactable {
         }
     }
 
+    addHTML(html) {
+        
+        const element = document.getElementById(this.id);
+        if (element) {
+            element.innerHTML = html;
+        } else {
+            console.warn(`Element with id ${this.id} not found.`);
+        }
+    }
+
+
     updatePosition(currentWidth, currentHeight, originalWidth, originalHeight, offsetX, offsetY) {
         
         const targetAspect = originalWidth / originalHeight;
