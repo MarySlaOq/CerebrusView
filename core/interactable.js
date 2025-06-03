@@ -2,7 +2,7 @@ class Interactable {
 
     id;
     bounding_box;
-    original_bounding_box; // Store original bounding box for comparing scalars
+    original_bounding_box;
     action;
     sprite;
 
@@ -15,7 +15,7 @@ class Interactable {
             height: height
         };
 
-        this.original_bounding_box = { ...this.bounding_box };
+        this.original_bounding_box = { ...this.bounding_box }; // Store original bounding box for scaling
         this.action = action;
 
         // Create element
@@ -56,18 +56,44 @@ class Interactable {
         }
     }
 
-    scale(scalar) {
-
-        // Scale the bounding box
-        this.bounding_box.width = this.original_bounding_box.width * scalar;
-        this.bounding_box.height = this.original_bounding_box.height * scalar;
-
+    updatePosition(currentWidth, currentHeight, originalWidth, originalHeight, offsetX, offsetY) {
+        
+        const targetAspect = originalWidth / originalHeight;
+        const currentAspect = currentWidth / currentHeight;
+        
+        let scale, effectiveWidth, effectiveHeight, xOffset = 0, yOffset = 0;
+        
+        if (currentAspect > targetAspect) {
+            // Letterboxing (black bars top and bottom)
+            scale = currentHeight / originalHeight;
+            effectiveWidth = originalWidth * scale;
+            xOffset = (currentWidth - effectiveWidth) / 2;
+        } else {
+            // Pillarboxing (black bars left and right)
+            scale = currentWidth / originalWidth;
+            effectiveHeight = originalHeight * scale;
+            yOffset = (currentHeight - effectiveHeight) / 2;
+        }
+        
+        // Apply scaling to position and size
+        const newX = (this.original_bounding_box.x * scale) + xOffset;
+        const newY = (this.original_bounding_box.y * scale) + yOffset;
+        const newWidth = this.original_bounding_box.width * scale;
+        const newHeight = this.original_bounding_box.height * scale;
+        
+        this.bounding_box = {
+            x: newX,
+            y: newY,
+            width: newWidth,
+            height: newHeight
+        };
+        
         const element = document.getElementById(this.id);
         if (element) {
-            element.style.width = `${this.bounding_box.width}px`;
-            element.style.height = `${this.bounding_box.height}px`;
-        } else {
-            console.warn(`Element with id ${this.id} not found.`);
+            element.style.left = `${newX + offsetX}px`;
+            element.style.top = `${newY + offsetY}px`;
+            element.style.width = `${newWidth}px`;
+            element.style.height = `${newHeight}px`;
         }
     }
 

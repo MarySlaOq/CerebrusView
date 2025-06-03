@@ -23,8 +23,6 @@ class Scene {
     }
 
     addInteractable(interactable) {
-        
         this.interactables.push(interactable);
-        console.log(`Interactable ${interactable} registered in scene ${this.scene_id}`);
     }
 }

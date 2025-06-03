@@ -3,48 +3,49 @@ import Game from './core/core.js';
 document.addEventListener("DOMContentLoaded", () => {
 
     Game.settings.debug_colliders = true; // Enable debug colliders
-    Game.settings.aspect_ratio = 16/9; // Set aspect ratio to 16:9
+    Game.settings.target_resolution = { width: 1920, height: 1080 }; // Set aspect ratio to 16:9
 
     Game.game_Init();
     
 
     // Add interactables (lados esq/right, up/down, hitbox sides size, hitbox height size )
 
-        // Add fridge 
-            //img
-            let fridgeimg = new Interactable(930, 190, 500, 500);
-            //hitbox
-            let fridge = new Interactable(1070, 250, 210, 400, () => {
-            window.open("countdown.html", '_self'); 
-            });
+    // Add fridge 
+    
+    //img
+    let fridgeimg = new Interactable(960, 235, 580, 580);
+    //hitbox
+    let fridge = new Interactable(1100, 290, 290, 490, () => {
+        window.open("countdown.html", '_self'); 
+    });
 
-            fridgeimg.addSprite("imgs/Kitchen_fridge.png"); // Add sprite to the trashcan interactable
-            Game.game_RegisterInteractable("Kitchen", fridgeimg);
-            Game.game_RegisterInteractable("Kitchen", fridge);
+    fridgeimg.addSprite("imgs/Kitchen_fridge.png"); // Add sprite to the trashcan interactable
+    Game.game_RegisterInteractable("Kitchen", fridgeimg);
+    Game.game_RegisterInteractable("Kitchen", fridge);
 
-        // Add cabinet 
-            //img
-            let cabinetimg = new Interactable(790, 400, 300, 300);
-            //hitbox
-            let cabinet = new Interactable(809, 420, 205, 240, () => {
-            window.open("countdown.html", '_self'); 
-            });
+// Add cabinet 
+    //img
+    let cabinetimg = new Interactable(770, 478, 300, 300);
+    //hitbox
+    let cabinet = new Interactable(789, 500, 203, 240, () => {
+    window.open("countdown.html", '_self'); 
+    });
 
-            cabinetimg.addSprite("imgs/Kitchen_cabinet.png"); // Add sprite to the trashcan interactable
-            Game.game_RegisterInteractable("Kitchen", cabinetimg);
-            Game.game_RegisterInteractable("Kitchen", cabinet);
+    cabinetimg.addSprite("imgs/Kitchen_cabinet.png"); // Add sprite to the trashcan interactable
+    Game.game_RegisterInteractable("Kitchen", cabinetimg);
+    Game.game_RegisterInteractable("Kitchen", cabinet);
 
-        // Add PETBOWL 
-            //img
-            let bowlimg = new Interactable(1230, 630, 260, 260);
-            //hitbox
-            let bowl = new Interactable(1260, 699, 198, 123, () => {
-            window.open("countdown.html", '_self'); 
-            });
+// Add PETBOWL 
+    //img
+    let bowlimg = new Interactable(1270, 710, 260, 260);
+    //hitbox
+    let bowl = new Interactable(1300, 780, 198, 123, () => {
+    window.open("countdown.html", '_self'); 
+    });
 
-            bowlimg.addSprite("imgs/Kitchen_foodwater.png"); // Add sprite to the trashcan interactable
-            Game.game_RegisterInteractable("Kitchen", bowlimg);
-            Game.game_RegisterInteractable("Kitchen", bowl);
+    bowlimg.addSprite("imgs/Kitchen_foodwater.png"); // Add sprite to the trashcan interactable
+    Game.game_RegisterInteractable("Kitchen", bowlimg);
+    Game.game_RegisterInteractable("Kitchen", bowl);
 
     // Add scenes  hitbox = lados esq/right, up/down, hitbox sides size, hitbox height size )
     // Opeanable fridge

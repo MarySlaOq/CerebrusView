@@ -8,13 +8,9 @@ let game_state = {
 
 let settings = {
     debug_colliders: false,
-    overflow_colour: "black",
     enable_overflow_collision: false, // Should collidefrs outside the game area be enabled?
-    aspect_ratio: 16 / 9,
+    target_resolution: { width: 1920, height: 1080 },
 }; 
-
-const PORTAL_OFFSET_X = 150; // Offset for portal positioning
-const PORTAL_OFFSET_Y = 50; // Offset for portal positioning
 
 const get_scene = () => {
     return document.getElementById("scene");
@@ -26,8 +22,15 @@ function game_Init() {
     console.log("Game initialized");
     game_state.isRunning = true;
 
+    game_state.render_data.original = {
+        width: settings.target_resolution.width || 1920,
+        height: settings.target_resolution.height || 1080,
+        left: 0,
+        top: 0,
+    };
+
+    // Set up the game container
     r_UpdateScreenSize();
-    console.log(`Render data: ${JSON.stringify(game_state.render_data)}`);
 
     document.querySelectorAll(".scene").forEach(scene => {
 
@@ -43,30 +46,79 @@ function game_Init() {
             game_LoadScene(scene_obj);
     });
 
-    // Position portals
-    r_UpdatePortals();
-
     // Add event listeners to portals
-    document.querySelectorAll(".portal").forEach(portal => {
-        
-        if (portal.hasAttribute("href"))
+    game_InitPortals();
+}
 
-            portal.addEventListener("click", (event) => {
-                event.preventDefault(); // Prevent default link behavior
-                let target_scene = portal.getAttribute("href");
+// Define portal information
+const portal_data = {
+    left: {
+        x: 0,
+        y: settings.target_resolution.height / 2, 
+        sprite: "core/res/portal_left.png",
+        scale : 0.12,
+    },
+    right: {
+        x: settings.target_resolution.width, 
+        y: settings.target_resolution.height / 2,
+        sprite: "core/res/portal_right.png",
+        scale: 0.12,
+    }
+};
 
-                if (game_state.scene_map[target_scene]) {
+function game_InitPortals() {
 
-                    game_LoadScene(game_state.scene_map[target_scene]);
+    // get portal image size
+    var URL = portal_data.left.sprite;
+    var img = new Image();
 
-                } else {
-                    console.warn(`Scene ${target_scene} not found.`);
-                }
-            });
-        else {
-            console.warn("Portal does not have a valid href attribute.");
+    img.src = URL;
+    img.onload = () => {
+
+        // Set portal width and height based on the image size
+        for (const side in portal_data) {
+            portal_data[side].width = img.width * portal_data[side].scale;
+            portal_data[side].height = img.height * portal_data[side].scale;
         }
-    });
+
+        // Initialize portals after image is loaded
+        document.querySelectorAll(".portal").forEach(portal => {
+        
+            if (portal.hasAttribute("href")) {
+    
+                // Get portal scene
+                const parentScene = portal.parentElement.parentElement.id;
+    
+                // Create portal interactable
+                const portalSide = portal.classList.contains("left");
+                const positioning = portal_data[portalSide ? "left" : "right"];
+                if (!portalSide)
+                    positioning.x -= positioning.width; 
+    
+                let portal_interactable = new Interactable(
+                    positioning.x,
+                    positioning.y - positioning.height / 2, 
+                    positioning.width,
+                    positioning.height,
+                    () => {
+                        game_GotoScene(portal.getAttribute("href"));
+                    }
+                );
+    
+                // Set portal sprite
+                portal_interactable.addSprite(positioning.sprite);
+    
+                // Register the portal interactable
+                game_RegisterInteractable(parentScene, portal_interactable);
+
+                // Delete the portal element from the DOM
+                portal.parentNode.removeChild(portal);
+    
+        } else {
+                console.warn("Portal does not have a valid href attribute.");
+            }
+        });
+    };
 }
 
 function game_LoadScene(scene) {
@@ -127,60 +179,65 @@ function r_DrawGame() {
         console.warn("No current scene to render.");
     }
 
-    if (settings.debug_colliders) {
+    r_UpdateInteractables(); // Update interactables positions
 
-        // Clear previous colliders
-        let scene_element = document.getElementById(game_state.currentScene.scene_id);
-        if (scene_element) {
-            [...scene_element.querySelectorAll(".collider")].forEach(collider => collider.remove());
-        }
+    if (settings.debug_colliders) 
+        r_DrawColliders();
+}
 
-        // Draw debug colliders for interactables
-        Object.keys(game_state.scene_map).forEach(scene => {
+function r_DrawColliders() {
 
-            let interactables = game_state.scene_map[scene].interactables || [];
-
-            if (game_state.currentScene && game_state.currentScene.scene_id !== scene) return; // Skip if not the current scene
-
-            interactables.forEach(interactable => {
-
-                let pos = m_CalculateInteractablePosition(interactable);
-                let bounding_box = interactable.bounding_box;
-
-                // Create a debug collider element
-                let collider = document.createElement("div");
-                collider.classList.add("collider");
-                collider.style.position = "absolute";
-
-                // Set collider styles
-                collider.style.border = "1px solid red"; // Red border for visibility
-
-                collider.style.left = `${pos.x}px`;
-                collider.style.top = `${pos.y}px`;
-                collider.style.width = `${bounding_box.width}px`;
-                collider.style.height = `${bounding_box.height}px`;
-
-                // Append to the scene
-                document.getElementById(game_state.currentScene.scene_id).appendChild(collider);
-            });
-        });
+    // Clear previous colliders
+    let scene_element = document.getElementById(game_state.currentScene.scene_id);
+    if (scene_element) {
+        [...scene_element.querySelectorAll(".collider")].forEach(collider => collider.remove());
     }
 
-    r_UpdatePortals(); // Update portal positions
-    r_UpdateInteractables(); // Update interactables positions
+    // Draw debug colliders for interactables
+    Object.keys(game_state.scene_map).forEach(scene => {
+
+        let interactables = game_state.scene_map[scene].interactables || [];
+
+        if (game_state.currentScene && game_state.currentScene.scene_id !== scene) return; // Skip if not the current scene
+
+        interactables.forEach(interactable => {
+
+            let pos = m_CalculateInteractablePosition(interactable);
+            let bounding_box = interactable.bounding_box;
+
+            // Create a debug collider element
+            let collider = document.createElement("div");
+            collider.classList.add("collider");
+            collider.style.position = "absolute";
+
+            // Set collider styles
+            collider.style.border = "1px solid red"; // Red border for visibility
+
+            collider.style.left = `${pos.x}px`;
+            collider.style.top = `${pos.y}px`;
+            collider.style.width = `${bounding_box.width}px`;
+            collider.style.height = `${bounding_box.height}px`;
+
+            // Append to the scene
+            document.getElementById(game_state.currentScene.scene_id).appendChild(collider);
+        });
+    });
 }
 
 function r_UpdateScreenSize() {
 
     const screen_size = m_CalculateScreenSize();
-    game_state.render_data = {
-        width: screen_size.width,
-        height: screen_size.height,
-        left: 0,
-        right: screen_size.width,
-        top: 0,
-        bottom: screen_size.height
-    };
+
+    game_state.render_data.width = screen_size.width;
+    game_state.render_data.height = screen_size.height;
+    game_state.render_data.left = 0;
+    game_state.render_data.top = 0;
+    game_state.render_data.right = game_state.render_data.left + game_state.render_data.width;
+    game_state.render_data.bottom = game_state.render_data.top + game_state.render_data.height;
+
+    // Clamp the render data
+    game_state.render_data.width = m_Clamp(game_state.render_data.width, 300, window.innerWidth);
+    game_state.render_data.height = m_Clamp(game_state.render_data.height, 300, window.innerHeight);
 
     // Update the game container size
     const game_container = get_scene();
@@ -189,42 +246,57 @@ function r_UpdateScreenSize() {
     game_container.style.left = `${game_state.render_data.left}px`;
     game_container.style.top = `${game_state.render_data.top}px`;
 
-    // Set the background color for overflow areas if enabled
-    if (settings.enable_overflow_collision) {
-        game_container.style.backgroundColor = settings.overflow_colour;
-    }
-
     // Update the interactable positions and scale
-    
+    let interactables = game_state.currentScene?.interactables || [];
+    let boundingLeft = get_scene().getBoundingClientRect().left;
+    let boundingTop = get_scene().getBoundingClientRect().top;
+
+    interactables.forEach(interactable => {
+
+        interactable.updatePosition(
+            game_state.render_data.width,
+            game_state.render_data.height,
+            game_state.render_data.original.width, 
+            game_state.render_data.original.height,
+            game_state.render_data.left + boundingLeft,
+            game_state.render_data.top + boundingTop
+        );
+    });
 }
 
 function m_CalculateScreenSize() {
 
-    const monitor_width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-    const monitor_height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-    
-    // Calculate the aspect ratio based on the settings
-    const aspect_ratio = settings.aspect_ratio || (16 / 9);
-    if (aspect_ratio <= 0) {
-        console.error("Invalid aspect ratio. Using default 16:9.");
-        return { width: monitor_width, height: monitor_height };
+    const monitor_width = window.innerWidth;
+    const monitor_height = window.innerHeight;
+
+    const target_aspect = settings.target_resolution.width / settings.target_resolution.height;
+    const screen_aspect = monitor_width / monitor_height;
+
+    let width, height;
+
+    if (screen_aspect > target_aspect) {
+        height = monitor_height;
+        width = height * target_aspect;
+    } else {
+        width = monitor_width;
+        height = width / target_aspect;
     }
 
-    let width = monitor_height * aspect_ratio;
-    let height = monitor_width / aspect_ratio;
-
     return {
-        width: m_Clamp(width, 300, monitor_width), // Clamp width to a minimum of 300px
-        height: m_Clamp(height, 300, monitor_height) // Clamp height to a minimum of 300px
+        width,
+        height,
     };
 }
 
 function m_CalculateInteractablePosition(interactable) {
 
+    let boundingLeft = get_scene().getBoundingClientRect().left;
+    let boundingTop = get_scene().getBoundingClientRect().top;
+
     // Calculate the position of an interactable based on its bounding box
     return {
-        x: interactable.bounding_box.x + game_state.render_data.left,
-        y: interactable.bounding_box.y + game_state.render_data.top
+        x: interactable.bounding_box.x + game_state.render_data.left + boundingLeft,
+        y: interactable.bounding_box.y + game_state.render_data.top + boundingTop
     };
 }
 
@@ -234,32 +306,6 @@ function m_Clamp(num, min, max) {
       : num >= max 
         ? max 
         : num
-  }
-
-function r_UpdatePortals() {
-
-    const left_portal_pos = {
-        x: game_state.render_data.left + PORTAL_OFFSET_X / 3,
-        y: game_state.render_data.top + game_state.render_data.height / 2 - PORTAL_OFFSET_Y
-    };
-
-    const right_portal_pos = {
-        x: game_state.render_data.right - PORTAL_OFFSET_X,
-        y: game_state.render_data.top + game_state.render_data.height / 2 - PORTAL_OFFSET_Y
-    };
-
-    document.querySelectorAll(".portal").forEach(portal => {
-        
-        if (portal.classList.contains("left")) {
-            portal.style.left = `${left_portal_pos.x}px`;
-            portal.style.top = `${left_portal_pos.y}px`;
-        }
-
-        if (portal.classList.contains("right")) {
-            portal.style.left = `${right_portal_pos.x}px`;
-            portal.style.top = `${right_portal_pos.y}px`;
-        }
-    });
 }
 
 function r_UpdateInteractables() {
@@ -286,6 +332,8 @@ function r_UpdateInteractables() {
             console.warn(`Interactable element with id ${interactable.id} not found.`);
         }
     });
+
+    r_UpdateScreenSize();
 }
 
 // Hook window resize
@@ -302,13 +350,14 @@ document.addEventListener("click", (event) => {
     if (!game_state.currentScene) return; // No current scene
 
     // Check if outside the game area
-    if (!settings.enable_overflow_collision)
-        if (event.clientX < game_state.render_data.left || 
-            event.clientX > game_state.render_data.right || 
-            event.clientY < game_state.render_data.top || 
-            event.clientY > game_state.render_data.bottom) {
-            return; // Click is outside the game area
+    if (!settings.enable_overflow_collision) {
+
+        let scene_box = get_scene().getBoundingClientRect();
+        if (event.clientX < scene_box.left || event.clientX > scene_box.right ||
+            event.clientY < scene_box.top || event.clientY > scene_box.bottom) {
+            return; 
         }
+    }
 
     let interactables = game_state.currentScene.interactables || [];
 
