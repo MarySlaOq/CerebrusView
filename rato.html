@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Trocar e Mover Imagem com o Rato</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    h2 {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-family: sans-serif;
+    }
+
+    img {
+      width: 300px;
+      cursor: grab;
+      user-select: none;
+      position: absolute;
+      top: 100px;
+      left: 100px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Segura e arrasta a imagem com o rato para trocá-la</h2>
+  <img id="imagem" src="images/1.png" alt="Imagem Inicial" draggable="false">
+
+  <script>
+    const imagem = document.getElementById("imagem");
+
+    const TEMPO_PARA_TROCAR_1 = 3000;
+    const TEMPO_PARA_TROCAR_2 = 6000;
+
+    let tempoPressionado = 0;
+    let ultimaAtualizacao = 0;
+    let estadoAtual = 1;
+
+    let isHolding = false;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    function atualizarImagem() {
+      if (tempoPressionado >= TEMPO_PARA_TROCAR_2 && estadoAtual < 3) {
+        imagem.src = "images/3.png";
+        estadoAtual = 3;
+      } else if (tempoPressionado >= TEMPO_PARA_TROCAR_1 && estadoAtual < 2) {
+        imagem.src = "images/2.png";
+        estadoAtual = 2;
+      }
+    }
+
+    function loopDeAtualizacao() {
+      if (isHolding) {
+        const agora = Date.now();
+        tempoPressionado += agora - ultimaAtualizacao;
+        ultimaAtualizacao = agora;
+        atualizarImagem();
+      }
+      requestAnimationFrame(loopDeAtualizacao);
+    }
+
+    requestAnimationFrame(loopDeAtualizacao);
+
+    imagem.addEventListener("mousedown", (e) => {
+      isHolding = true;
+      ultimaAtualizacao = Date.now();
+
+      const rect = imagem.getBoundingClientRect();
+      offsetX = e.clientX - rect.left;
+      offsetY = e.clientY - rect.top;
+
+      imagem.style.cursor = "grabbing";
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (isHolding && e.buttons === 1) {
+        imagem.style.left = `${e.clientX - offsetX}px`;
+        imagem.style.top = `${e.clientY - offsetY}px`;
+      }
+    });
+
+    function pararTudo() {
+      isHolding = false;
+      imagem.style.cursor = "grab";
+    }
+
+    document.addEventListener("mouseup", pararTudo);
+    document.addEventListener("mouseleave", pararTudo);
+  </script>
+</body>
+</html>
+
+
