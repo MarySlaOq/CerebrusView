@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let fridgeimg = new Interactable(960, 235, 580, 580);
     //hitbox
     let fridge = new Interactable(1100, 290, 290, 490, () => {
-        window.open("countdown.html", '_self'); 
+        Game.game_GotoScene("Fridge");
     });
 
     fridgeimg.addSprite("imgs/Kitchen_fridge.png"); // Add sprite to the trashcan interactable
@@ -48,18 +48,21 @@ document.addEventListener("DOMContentLoaded", () => {
     Game.game_RegisterInteractable("Kitchen", bowl);
 
     // Add scenes  hitbox = lados esq/right, up/down, hitbox sides size, hitbox height size )
-    // Opeanable fridge
-    Game.game_RegisterInteractable("Fridge", new Interactable(500, 70, 320, 630, () => {
-        console.log("Fridge opened");
+    // fridge
+    Game.game_RegisterInteractable("Fridge", new Interactable(715, 100, 480, 950, () => {
         
         Game.game_GotoScene("FridgeOpen");
     }));
     
-    Game.game_RegisterInteractable("FridgeOpen", new Interactable(500, 70, 320, 630, () => {
+    Game.game_RegisterInteractable("FridgeOpen", new Interactable(500, 180, 800, 950, () => {
         console.log("Fridge closed");
-        Game.game_GotoScene("Fridge");
+        Game.game_GotoScene("FridgeMessy");
     }));
     
+    Game.game_RegisterInteractable("FridgeMessy", new Interactable(715, 100, 480, 950, () => {
+        console.log("Fridge closed");
+        Game.game_GotoScene("Kitchen");
+    }));
     //openable cabinet
     
     Game.game_RegisterInteractable("Cabinet", new Interactable(800, 300, 300, 200, () => {
@@ -81,8 +84,9 @@ document.addEventListener("DOMContentLoaded", () => {
     
     Game.game_RegisterInteractable("petbowl-eat", new Interactable(320, 250, 1400, 850, () => {
         console.log("Cabinet closed");
-        Game.game_GotoScene("Cabinet");
+        Game.game_GotoScene("Kitchen");
     }));
+
 });
 
 
