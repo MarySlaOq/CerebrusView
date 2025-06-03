@@ -32,6 +32,15 @@ document.addEventListener("DOMContentLoaded", () => {
     let cabinetimg = new Interactable(770, 478, 300, 300);
     //hitbox
     let cabinet = new Interactable(789, 500, 203, 240, () => {
+
+        // Check if the fridge has been opened before
+        if (Game.inventory.i_GetItem("cabinet_opened")) {
+            return;
+        }
+
+        // Svae in the inventory that the cabinet has been opened
+        Game.inventory.i_AddItem("cabinet_opened");
+
         //window.open("countdown.html", '_self'); 
         Game.game_GotoScene("cabinet");
     });
@@ -69,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add scenes  hitbox = lados esq/right, up/down, hitbox sides size, hitbox height size )
     // fridge
     Game.game_RegisterInteractable("Fridge", new Interactable(715, 100, 480, 950, () => {
-        
+
         Game.game_GotoScene("FridgeOpen");
     }));
     
