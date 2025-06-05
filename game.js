@@ -147,9 +147,33 @@ document.addEventListener("DOMContentLoaded", () => {
         Game.game_GotoScene("trash");
     });
 
-    sofaimg.addSprite("imgs/Kitchen_trash.png"); // Add sprite to the trashcan interactable
-    Game.game_RegisterInteractable("Kitchen", sofaimg);
-    Game.game_RegisterInteractable("Kitchen", sofa);
+    sofaimg.addSprite("imgs/LivingRoom_sofa.png"); // Add sprite to the trashcan interactable
+    Game.game_RegisterInteractable("LivingRoom", sofaimg);
+    Game.game_RegisterInteractable("LivingRoom", sofa);
+
+
+
+    // Add tvstand 
+    //img
+    let tvimg = new Interactable(1250, 610, 200, 200);
+    //hitbox
+    let tv = new Interactable(1290, 620, 120, 160, () => {
+        // Check if the fridge has been opened before
+        if (Game.inventory.i_GetItem("tv_opened")) {  
+            window.alert("You already opened this");          
+            return;
+        }
+        
+        tvimg.addSprite("imgs/Kitchen_trash-open.png"); // Add sprite to the trashcan interactable
+        // Savee in the inventory that the cabinet has been opened
+        Game.inventory.i_AddItem("tv_opened");
+        
+        Game.game_GotoScene("trash");
+    });
+
+    tvimg.addSprite("imgs/LivingRoom_tvstand.png"); // Add sprite to the trashcan interactable
+    Game.game_RegisterInteractable("LivingRoom", tvimg);
+    Game.game_RegisterInteractable("LivingRoom", tv);
 
 
 
@@ -253,7 +277,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Game.game_RegisterInteractable("petbowl-eat", new Interactable(320, 250, 1400, 850, () => {
         console.log("Cabinet closed");
         Game.game_GotoScene("Kitchen");
-
+    }));
 
 //sounds
 function playSound(fileName){
@@ -261,4 +285,4 @@ function playSound(fileName){
     document.getElementById("button").setAttribute('src', fileName);
    // document.getElementById("shotGun").load(); //call this to just preload the audio without playing
    // document.getElementById("birdsSound").play(); //call this to play the song right away
-}
+};
