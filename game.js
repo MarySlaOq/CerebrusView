@@ -33,6 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add interactables (lados esq/right, up/down, hitbox sides size, hitbox height size )
 
+
+                                               //KITCHEN
     // Add fridge 
     
     //img
@@ -122,8 +124,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
     trashimg.addSprite("imgs/Kitchen_trash.png"); // Add sprite to the trashcan interactable
     Game.game_RegisterInteractable("Kitchen", trashimg);
-    
     Game.game_RegisterInteractable("Kitchen", trash);
+
+                                               //LIVINGROOM
+
+
+    // Add sofa 
+    //img
+    let sofaimg = new Interactable(1250, 610, 200, 200);
+    //hitbox
+    let sofa = new Interactable(1290, 620, 120, 160, () => {
+        // Check if the fridge has been opened before
+        if (Game.inventory.i_GetItem("sofa_opened")) {  
+            window.alert("You already opened this");          
+            return;
+        }
+        
+        sofaimg.addSprite("imgs/Kitchen_trash-open.png"); // Add sprite to the trashcan interactable
+        // Savee in the inventory that the cabinet has been opened
+        Game.inventory.i_AddItem("sofa_opened");
+        
+        Game.game_GotoScene("trash");
+    });
+
+    sofaimg.addSprite("imgs/Kitchen_trash.png"); // Add sprite to the trashcan interactable
+    Game.game_RegisterInteractable("Kitchen", sofaimg);
+    Game.game_RegisterInteractable("Kitchen", sofa);
 
 
 
@@ -216,6 +242,17 @@ document.addEventListener("DOMContentLoaded", () => {
         Game.game_GotoScene("Kitchen");
     }));
 });
+
+    //sofa
+
+    Game.game_RegisterInteractable("petbowl", new Interactable(600, 180, 750, 750, () => {
+        console.log("Cabinet opened");
+        Game.game_GotoScene("petbowl-eat");
+    }));
+    
+    Game.game_RegisterInteractable("petbowl-eat", new Interactable(320, 250, 1400, 850, () => {
+        console.log("Cabinet closed");
+        Game.game_GotoScene("Kitchen");
 
 
 //sounds
