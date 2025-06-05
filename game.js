@@ -175,7 +175,71 @@ document.addEventListener("DOMContentLoaded", () => {
     Game.game_RegisterInteractable("LivingRoom", tvimg);
     Game.game_RegisterInteractable("LivingRoom", tv);
 
+    // Add hanger 
+    //img
+    let hangerimg = new Interactable(1250, 610, 200, 200);
+    //hitbox
+    let hanger = new Interactable(1290, 620, 120, 160, () => {
+        // Check if the fridge has been opened before
+        if (Game.inventory.i_GetItem("hanger_opened")) {  
+            window.alert("You already opened this");          
+            return;
+        }
+        
+        tvimg.addSprite("imgs/LivingRoom_hanger.png"); // Add sprite to the trashcan interactable
+        // Savee in the inventory that the cabinet has been opened
+        Game.inventory.i_AddItem("hanger_opened");
+        
+        Game.game_GotoScene("trash");
+    });
 
+    hangerimg.addSprite("imgs/LivingRoom_hanger.png"); // Add sprite to the trashcan interactable
+    Game.game_RegisterInteractable("LivingRoom", hangerimg);
+    Game.game_RegisterInteractable("LivingRoom", hanger);
+
+    // Add books~case 
+    //img
+    let bookimg = new Interactable(1250, 610, 200, 200);
+    //hitbox
+    let book = new Interactable(1290, 620, 120, 160, () => {
+        // Check if the fridge has been opened before
+        if (Game.inventory.i_GetItem("book_opened")) {  
+            window.alert("You already opened this");          
+            return;
+        }
+        
+        bookimg.addSprite("imgs/Kitchen_trash-open.png"); // Add sprite to the trashcan interactable
+        // Savee in the inventory that the cabinet has been opened
+        Game.inventory.i_AddItem("book_opened");
+        
+        Game.game_GotoScene("trash");
+    });
+
+    book.addSprite("imgs/LivingRoom_bookcase.png"); // Add sprite to the trashcan interactable
+    Game.game_RegisterInteractable("LivingRoom", bookimg);
+    Game.game_RegisterInteractable("LivingRoom", book);
+
+    // Add cofee table 
+    //img
+    let coffeeimg = new Interactable(1250, 610, 200, 200);
+    //hitbox
+    let coffee = new Interactable(1290, 620, 120, 160, () => {
+        // Check if the fridge has been opened before
+        if (Game.inventory.i_GetItem("coffee_opened")) {  
+            window.alert("You already opened this");          
+            return;
+        }
+        
+        coffeeimg.addSprite("imgs/Kitchen_trash-coffeetable.png"); // Add sprite to the trashcan interactable
+        // Savee in the inventory that the cabinet has been opened
+        Game.inventory.i_AddItem("tv_opened");
+        
+        Game.game_GotoScene("trash");
+    });
+
+    tvimg.addSprite("imgs/LivingRoom_tvstand.png"); // Add sprite to the trashcan interactable
+    Game.game_RegisterInteractable("LivingRoom", tvimg);
+    Game.game_RegisterInteractable("LivingRoom", tv);
 
 // Add scenes  hitbox = lados esq/right, up/down, hitbox sides size, hitbox height size )
     // fridge
