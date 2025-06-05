@@ -34,7 +34,7 @@
 </head>
 <body>
   <h2>Segura e arrasta a imagem com o rato para trocá-la</h2>
-  <img id="imagem" src="images/1.png" alt="Imagem Inicial" draggable="false">
+  <img id="imagem" src="imgs/coffeetable_remotechanges1.png" alt="Imagem Inicial" draggable="false">
 
   <script>
     const imagem = document.getElementById("imagem");
@@ -52,11 +52,14 @@
 
     function atualizarImagem() {
       if (tempoPressionado >= TEMPO_PARA_TROCAR_2 && estadoAtual < 3) {
-        imagem.src = "images/3.png";
+        imagem.src = "imgs/coffeetable_remotechanges2.png";
+        estadoAtual = 2;
+      } else if (tempoPressionado >= TEMPO_PARA_TROCAR_1 && estadoAtual < 2) {
+        imagem.src = "imgs/coffeetable_remotechanges3.png";
         estadoAtual = 3;
       } else if (tempoPressionado >= TEMPO_PARA_TROCAR_1 && estadoAtual < 2) {
-        imagem.src = "images/2.png";
-        estadoAtual = 2;
+        imagem.src = "imgs/coffeetable_remotechanges4.png";
+        estadoAtual = 4;
       }
     }
 
