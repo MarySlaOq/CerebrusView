@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Game.game_Init();
 
     const timer = new Interactable(0, 0, 150, 100);
-    const start_time = 69;
+    const start_time = 15;
     let time = start_time;
 
     timer.addHTML("<p id='timer'>00:00</p>");
@@ -23,7 +23,10 @@ document.addEventListener("DOMContentLoaded", () => {
             timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
             time--;
+            
         }
+            
+
     }, 1000); // Update every second
 
     Game.game_RegisterInteractable(undefined, timer);
