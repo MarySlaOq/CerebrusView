@@ -3,6 +3,7 @@ import Game from './core/core.js';
 document.addEventListener("DOMContentLoaded", () => {
 
     Game.settings.debug_colliders = true; // Enable debug colliders
+    Game.settings.disable_empty_interactables = true; // Disable empty interactables
     Game.settings.target_resolution = { width: 1920, height: 1080 }; // Set aspect ratio to 16:9
 
     Game.game_Init();
@@ -109,6 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let trashimg = new Interactable(1250, 610, 200, 200);
     //hitbox
     let trash = new Interactable(1290, 620, 120, 160, () => {
+
         // Check if the fridge has been opened before
         if (Game.inventory.i_GetItem("trash_opened")) {  
             window.alert("You already opened this");          
@@ -342,6 +344,8 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Cabinet closed");
         Game.game_GotoScene("Kitchen");
     }));
+
+    Game.text.t_ShowModal(["Hai!!! Nani ga suki??", "Chocominto!", "Yori mo anata!"]);
 });
 
     //sofa
