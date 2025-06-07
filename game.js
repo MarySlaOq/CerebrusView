@@ -233,7 +233,7 @@ document.addEventListener("DOMContentLoaded", () => {
     //controler
     let remoteimg = new Interactable;
     remoteimg.addSprite("imgs/coffeetable_remotechanges2.png"); // Add sprite to the trashcan interactable
-    Game.game_RegisterInteractable("coffee", remoteimg);
+    Game.game_RegisterInteractable("coffee2", remoteimg);
 
 
     // Add tvstand 

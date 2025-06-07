@@ -14,7 +14,7 @@
 </head>
 <body>
     <style>
-        img {
+    img {
       width: 600px;
       cursor: grab;
       user-select: none;
@@ -30,7 +30,6 @@
 
         <div id="scene"></div>
 
-
         <div id="LivingRoom" class="scene">
             <div class="scene-content">
                 <!-- Scene background -->
@@ -41,7 +40,7 @@
         
         <!-- coffee table -->
 
-        <div id="coffee" class="scene active">
+        <div id="coffee2" class="scene active">
             <div class="scene-content">
                 <!-- Scene background -->
                 <img src="imgs/coffeetable_remotechanges.jpg" alt="">
@@ -54,14 +53,12 @@
 
     <!-- Import le game -->
     <script type="module" src="game.js"></script>
-    <script type="module" src="shake.js"></script>
     <script>
     const remote = document.getElementById("remote");
 
     const TEMPO_PARA_TROCAR_1 = 3000;
-    const TEMPO_PARA_TROCAR_2 = 3000;
-    const TEMPO_PARA_TROCAR_3 = 3000;
-    const TEMPO_PARA_TROCAR_4 = 3000;
+    const TEMPO_PARA_TROCAR_2 = 6000;
+    const TEMPO_PARA_TROCAR_3 = 9000;
 
     let tempoPressionado = 0;
     let ultimaAtualizacao = 0;
@@ -72,15 +69,16 @@
     let offsetY = 0;
 
     function atualizarremote() {
-      if (tempoPressionado >= TEMPO_PARA_TROCAR_1 && estadoAtual < 3) {
-        remote.src = "imgs/coffeetable_remotechanges2.png";
-        estadoAtual = 2;
-      } else if (tempoPressionado >= TEMPO_PARA_TROCAR_1 && estadoAtual < 2) {
+      if (tempoPressionado >= TEMPO_PARA_TROCAR_3 && estadoAtual < 4) {
+        remote.src = "imgs/coffeetable_remotechanges4.png";
+        estadoAtual = 4;
+        
+      } else if (tempoPressionado >= TEMPO_PARA_TROCAR_2 && estadoAtual < 3) {
         remote.src = "imgs/coffeetable_remotechanges3.png";
         estadoAtual = 3;
       } else if (tempoPressionado >= TEMPO_PARA_TROCAR_1 && estadoAtual < 2) {
-        remote.src = "imgs/coffeetable_remotechanges4.png";
-        estadoAtual = 4;
+        remote.src = "imgs/coffeetable_remotechanges2.png";
+        estadoAtual = 2;
       }
     }
 
@@ -118,6 +116,8 @@
       isHolding = false;
       remote.style.cursor = "grab";
     }
+
+    
 
     document.addEventListener("mouseup", pararTudo);
     document.addEventListener("mouseleave", pararTudo);
