@@ -223,6 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
         Game.inventory.i_AddItem("tv_opened");
         
         Game.game_GotoScene("coffee");
+        remote_routine(); 
     });
 
     coffeeimg.addSprite("imgs/LivingRoom_coffeetable.png"); // Add sprite to the trashcan interactable
@@ -362,8 +363,6 @@ document.addEventListener("DOMContentLoaded", () => {
         Game.game_GotoScene("Kitchen");
     }));
 
-    Game.text.t_ShowModal(["Hai!!! Nani ga suki??", "Chocominto!", "Yori mo anata!"]);
-});
 
     //sofa
 
@@ -376,6 +375,99 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Cabinet closed");
         Game.game_GotoScene("Kitchen");
     }));
+
+    // Register remote
+    // <img id="remote" src="imgs/coffeetable_remotechanges1.png" alt="" draggable="false"> 
+    const remote = new Interactable(600, 410, 700, 300, () => {}, "remote");
+
+    remote.addHTML(`<img id="remote_image" src="imgs/coffeetable_remotechanges1.png" alt="" draggable="false">`);
+    Game.game_RegisterInteractable("coffee", remote);
+});
+
+function remote_routine() {
+
+    const remote = document.getElementById("remote");
+
+    if (!remote) {
+        console.error("Remote element not found. Make sure it exists in the HTML.");
+        return;
+    }
+
+    remote.style.zIndex = "9999";
+    remote.style.pointerEvents = "auto"; 
+
+    const TEMPO_PARA_TROCAR_1 = 3000;
+    const TEMPO_PARA_TROCAR_2 = 3000 + TEMPO_PARA_TROCAR_1;
+    const TEMPO_PARA_TROCAR_3 = 3000 + TEMPO_PARA_TROCAR_2;
+
+    let tempoPressionado = 0;
+    let ultimaAtualizacao = 0;
+    let estadoAtual = 1;
+
+    let isHolding = false;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    function atualizarremote() {
+
+        const remote_img = document.getElementById("remote_image");
+
+      if (tempoPressionado >= TEMPO_PARA_TROCAR_1 && estadoAtual < 2) {
+        remote_img.src = "imgs/coffeetable_remotechanges2.png";
+        estadoAtual = 2;
+      } else if (tempoPressionado >= TEMPO_PARA_TROCAR_2 && estadoAtual < 3) {
+        remote_img.src = "imgs/coffeetable_remotechanges3.png";
+        estadoAtual = 3;
+      } else if (tempoPressionado >= TEMPO_PARA_TROCAR_3 && estadoAtual < 4) {
+        remote_img.src = "imgs/coffeetable_remotechanges4.png";
+        estadoAtual = 4;
+      }
+    }
+
+    function loopDeAtualizacao() {
+
+        
+        if (isHolding) {
+            const agora = Date.now();
+            tempoPressionado += agora - ultimaAtualizacao;
+            ultimaAtualizacao = agora;
+
+        atualizarremote();
+      }
+
+      requestAnimationFrame(loopDeAtualizacao);
+    }
+
+    requestAnimationFrame(loopDeAtualizacao);
+
+    remote.addEventListener("mousedown", (e) => {
+        
+      isHolding = true;
+      ultimaAtualizacao = Date.now();
+
+      const rect = remote.getBoundingClientRect();
+      offsetX = e.clientX - rect.left;
+      offsetY = e.clientY - rect.top;
+
+      remote.style.cursor = "grabbing";
+    });
+
+    document.addEventListener("mousemove", (e) => {
+        
+      if (isHolding && e.buttons === 1) {
+        remote.style.left = `${e.clientX - offsetX}px`;
+        remote.style.top = `${e.clientY - offsetY}px`;
+      }
+    });
+
+    function pararTudo() {
+      isHolding = false;
+      remote.style.cursor = "grab";
+    }
+
+    document.addEventListener("mouseup", pararTudo);
+    document.addEventListener("mouseleave", pararTudo);
+}
 
 //sounds
 function playSound(fileName){

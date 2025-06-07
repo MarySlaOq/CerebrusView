@@ -6,6 +6,15 @@
   font-size: 2vh;
 }
 
+img {  
+  user-drag: none;  
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
 /*
 * {
   background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.livspace-cdn.com%2Fplain%2Fhttps%3A%2F%2Fd3gq2merok8n5r.cloudfront.net%2Fabhinav%2Fond-1634120396-Obfdc%2Fjfm-2023-1672723560-eFGVH%2Fkitchen-1672749519-TNomr%2Fd-inki-jfm2023-400-1673074720-HjsAG%2F1-1673074746-J4GCl.jpg&f=1&nofb=1&ipt=5cedcf239957951fde851383c72989a6ba29e8d949aae8db90131e3432584b14");

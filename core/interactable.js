@@ -7,7 +7,7 @@ class Interactable {
     sprite;
     tags = []; // Tags for categorization or filtering
 
-    constructor(x, y, width, height, action = null) {
+    constructor(x, y, width, height, action = null, id = null) {
 
         this.bounding_box = {
             x: x,
@@ -20,7 +20,7 @@ class Interactable {
         this.action = action;
 
         // Create element
-        this.id = `interactable-${Math.floor(Math.random() * 1000000)}`;
+        this.id = id == null ? `interactable-${Math.floor(Math.random() * 1000000)}` : id;
         const element = document.createElement("div");
         element.classList.add("interactable");
         element.id = this.id;
@@ -28,9 +28,12 @@ class Interactable {
         element.style.position = "absolute";
         element.style.left = `${x}px`;
         element.style.top = `${y}px`;
-        element.style.width = `${width}px`;
-        element.style.height = `${height}px`;
-        element.style.zIndex = "100"; 
+        element.style.zIndex = action ? "100" : "0";
+
+        if (width > 0 && height > 0) {
+            element.style.width = `${width}px`;
+            element.style.height = `${height}px`;
+        }
 
         if (action == null) {
             // Deactivate pointer events if no action is provided
@@ -54,6 +57,24 @@ class Interactable {
 
         } else {
             console.warn(`Element with id ${this.id} not found.`);
+        }
+
+        if (this.original_bounding_box.width < 0 || this.original_bounding_box.height < 0) {
+            // Get real image size
+            const img = new Image();
+            img.src = image;
+            img.onload = () => {
+                const realWidth = img.width;
+                const realHeight = img.height;
+
+                // Update the bounding box with the real image size
+                this.bounding_box.width = realWidth;
+                this.bounding_box.height = realHeight;
+
+                // Update the element style
+                element.style.width = `${realWidth}px`;
+                element.style.height = `${realHeight}px`;
+            };
         }
     }
 
