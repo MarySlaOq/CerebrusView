@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (Game.inventory.i_GetItem("fridge_opened")) {
             return;
         }
-        fridgeimg.addSprite("imgs/Kitchen_fridge-open.png"); // Add sprite to the trashcan interactable
+        fridgeimg.addSprite("imgs/Kitchen_messyfridge.png"); // Add sprite to the trashcan interactable
         // Savee in the inventory that the cabinet has been opened
         Game.inventory.i_AddItem("fridge_opened");
         
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (Game.inventory.i_GetItem("fridge_opened")) {
             return;
         }
-        fridgeimg.addSprite("imgs/Kitchen_fridge-open.png");
+        fridgeimg.addSprite("imgs/Kitchen_messyfridge.png");
         // Savee in the inventory that the cabinet has been opened
         Game.inventory.i_AddItem("fridge_opened");
         
@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
             window.alert("You already opened this");
             return;
         }
-        cabinetimg.addSprite("imgs/Kitchen_cabinet-open.png"); // Add sprite to the trashcan interactable
+        cabinetimg.addSprite("imgs/Kitchen_messycabinets.png"); // Add sprite to the trashcan interactable
         // Savee in the inventory that the cabinet has been opened
         Game.inventory.i_AddItem("cabinet_opened");
 
@@ -99,6 +99,8 @@ document.addEventListener("DOMContentLoaded", () => {
     //hitbox
     let bowlwater = new Interactable(1300, 780, 198, 123, () => {        
         Game.game_GotoScene("petbowl");
+        bowlimg.addSprite("imgs/Kitchen_messyfoodwater.png");
+        Game.inventory.i_AddItem("bowl_opened");
     });
 
 
@@ -119,7 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
         
-        trashimg.addSprite("imgs/Kitchen_trash-open.png"); // Add sprite to the trashcan interactable
+        trashimg.addSprite("imgs/Kitchen_messytrash.png"); // Add sprite to the trashcan interactable
         // Savee in the inventory that the cabinet has been opened
         Game.inventory.i_AddItem("trash_opened");
         
@@ -144,7 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
         
-        sofaimg.addSprite("imgs/LivingRoom_tvstand.png"); // Add sprite to the trashcan interactable
+        sofaimg.addSprite("imgs/LivingRoom_messysofa.png"); // Add sprite to the trashcan interactable
         // Savee in the inventory that the cabinet has been opened
         Game.inventory.i_AddItem("sofa_opened");
         
@@ -198,11 +200,11 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
         
-        bookimg.addSprite("imgs/LivingRoom_bookcase.png"); // Add sprite to the trashcan interactable
+        bookimg.addSprite("imgs/LivingRoom_messybookshelf.png"); // Add sprite to the trashcan interactable
         // Savee in the inventory that the cabinet has been opened
         Game.inventory.i_AddItem("book_opened");
         
-        Game.game_GotoScene("");
+        Game.game_GotoScene("book");
     });
 
     bookimg.addSprite("imgs/LivingRoom_bookcase.png"); // Add sprite to the trashcan interactable
@@ -220,9 +222,9 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
         
-        coffeeimg.addSprite("imgs/LivingRoom_coffeetable.png"); // Add sprite to the trashcan interactable
+        coffeeimg.addSprite("imgs/LivingRoom_messycoffeetable.png"); // Add sprite to the trashcan interactable
         // Savee in the inventory that the cabinet has been opened
-        Game.inventory.i_AddItem("tv_opened");
+        Game.inventory.i_AddItem("coffee_opened");
         
         Game.game_GotoScene("coffee0");
         remote_routine(); 
@@ -250,7 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
         
-        tvimg.addSprite("imgs/Kitchen_trash-open.png"); // Add sprite to the trashcan interactable
+        tvimg.addSprite("imgs/LivingRoom_messytvstand.png"); // Add sprite to the trashcan interactable
         // Savee in the inventory that the cabinet has been opened
         Game.inventory.i_AddItem("tv_opened");
         
@@ -263,7 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
         
-        tvimg.addSprite("imgs/Kitchen_trash-open.png"); // Add sprite to the trashcan interactable
+        tvimg.addSprite("imgs/LivingRoom_messytvstand.png"); // Add sprite to the trashcan interactable
         // Savee in the inventory that the cabinet has been opened
         Game.inventory.i_AddItem("tv_opened");
         
@@ -380,14 +382,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //sofa
 
-    Game.game_RegisterInteractable("sofa", new Interactable(600, 180, 750, 750, () => {
+    Game.game_RegisterInteractable("sofa", new Interactable(300, 180, 1200, 750, () => {
         console.log("sofa opened");
-        Game.game_GotoScene("petbowl-eat");
+        Game.game_GotoScene("sofa2");
     }));
     
-    Game.game_RegisterInteractable("petbowl-eat", new Interactable(320, 250, 1400, 850, () => {
+    Game.game_RegisterInteractable("sofa2", new Interactable(300, 180, 1200, 750, () => {
         console.log("Cabinet closed");
-        Game.game_GotoScene("Kitchen");
+        Game.game_GotoScene("sofa3");
+    }));
+    Game.game_RegisterInteractable("sofa3", new Interactable(300, 180, 1200, 750, () => {
+        console.log("Cabinet closed");
+        Game.game_GotoScene("sofa4");
+    }));
+    Game.game_RegisterInteractable("sofa4", new Interactable(300, 250, 1200, 750, () => {
+        console.log("Cabinet closed");
+        Game.game_GotoScene("sofa5");
+    }));
+    Game.game_RegisterInteractable("sofa5", new Interactable(300, 180, 1200, 750, () => {
+        console.log("Cabinet closed");
+        Game.game_GotoScene("LivingRoom");
     }));
 
     //coffeeset
@@ -405,6 +419,73 @@ document.addEventListener("DOMContentLoaded", () => {
     Game.game_RegisterInteractable("coffee1", new Interactable(600, 180, 750, 750, () => {
         console.log("sofa opened");
         Game.game_GotoScene("LivingRoom");
+        
+    }));
+
+    //tvv
+    Game.game_RegisterInteractable("tv", new Interactable(300, 180, 1200, 750, () => {
+        console.log("sofa opened");
+        Game.game_GotoScene("tv2");
+    }));
+    Game.game_RegisterInteractable("tv2", new Interactable(300, 180, 1200, 750, () => {
+        console.log("sofa opened");
+        Game.game_GotoScene("tv3");
+    }));
+    Game.game_RegisterInteractable("tv3", new Interactable(300, 180, 1200, 750, () => {
+        console.log("sofa opened");
+        Game.game_GotoScene("tv4");
+    }));
+    Game.game_RegisterInteractable("tv4", new Interactable(300, 180, 1200, 750, () => {
+        console.log("sofa opened");
+        Game.game_GotoScene("tv5");
+    }));9
+    Game.game_RegisterInteractable("tv5", new Interactable(300, 100, 1400, 800, () => {
+        console.log("sofa opened");
+        Game.game_GotoScene("LivingRoom");
+    }));
+
+    //book
+    Game.game_RegisterInteractable("book", new Interactable(300, 180, 1200, 750, () => {
+        console.log("sofa opened");
+        Game.game_GotoScene("book1");
+    }));
+    Game.game_RegisterInteractable("book1", new Interactable(300, 180, 1200, 750, () => {
+        console.log("sofa opened");
+        Game.game_GotoScene("book2");
+    }));
+    Game.game_RegisterInteractable("book2", new Interactable(300, 180, 1200, 750, () => {
+        console.log("sofa opened");
+        Game.game_GotoScene("book3");
+    }));
+    Game.game_RegisterInteractable("book3", new Interactable(300, 180, 1200, 750, () => {
+        console.log("sofa opened");
+        Game.game_GotoScene("book4");
+    }));
+    Game.game_RegisterInteractable("book4", new Interactable(300, 180, 1200, 750, () => {
+        console.log("sofa opened");
+        Game.game_GotoScene("LivingRoom");
+    }));
+
+    //hanger
+    Game.game_RegisterInteractable("hanger", new Interactable(300, 180, 1200, 750, () => {
+        console.log("sofa opened");
+        Game.game_GotoScene("hanger1");
+    }));
+    Game.game_RegisterInteractable("hanger1", new Interactable(300, 180, 1200, 750, () => {
+        console.log("sofa opened");
+        Game.game_GotoScene("hanger2");
+    }));
+    Game.game_RegisterInteractable("hanger2", new Interactable(300, 180, 1200, 750, () => {
+        console.log("sofa opened");
+        Game.game_GotoScene("hanger3");
+    }));
+    Game.game_RegisterInteractable("hanger3", new Interactable(300, 180, 1200, 750, () => {
+        console.log("sofa opened");
+        Game.game_GotoScene("hanger4");
+    }));
+    Game.game_RegisterInteractable("hanger4", new Interactable(300, 180, 1200, 750, () => {
+        console.log("sofa opened");
+        window.open("end.html", "_self");
     }));
 
 
