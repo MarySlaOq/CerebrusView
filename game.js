@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (Game.inventory.i_GetItem("fridge_opened")) {
             return;
         }
-
+        fridgeimg.addSprite("imgs/Kitchen_fridge-open.png");
         // Savee in the inventory that the cabinet has been opened
         Game.inventory.i_AddItem("fridge_opened");
         
@@ -97,13 +97,15 @@ document.addEventListener("DOMContentLoaded", () => {
     //img
     let bowlimg = new Interactable(1270, 710, 260, 260);
     //hitbox
-    let bowl = new Interactable(1300, 780, 198, 123, () => {        
+    let bowlwater = new Interactable(1300, 780, 198, 123, () => {        
         Game.game_GotoScene("petbowl");
     });
 
+
     bowlimg.addSprite("imgs/Kitchen_foodwater.png"); // Add sprite to the trashcan interactable
     Game.game_RegisterInteractable("Kitchen", bowlimg);
-    Game.game_RegisterInteractable("Kitchen", bowl);
+    Game.game_RegisterInteractable("Kitchen", bowlwater);
+
 
 // Add trashcan 
     //img
@@ -304,11 +306,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //petbowl
 
-    Game.game_RegisterInteractable("petbowl", new Interactable(600, 180, 750, 750, () => {
+    Game.game_RegisterInteractable("petbowl", new Interactable(900, 150, 250, 250, () => {
         console.log("Cabinet opened");
         Game.game_GotoScene("petbowl-eat");
     }));
+    Game.game_RegisterInteractable("petbowl", new Interactable(620, 220, 250, 250, () => {
+        console.log("Cabinet opened");
+        Game.game_GotoScene("petbowl-drink");
+    }));
     
+    Game.game_RegisterInteractable("petbowl-drink", new Interactable(250, 250, 1350, 850, () => {
+        console.log("Cabinet closed");
+        Game.game_GotoScene("Kitchen");
+    }));
+
     Game.game_RegisterInteractable("petbowl-eat", new Interactable(320, 250, 1400, 850, () => {
         console.log("Cabinet closed");
         Game.game_GotoScene("Kitchen");
