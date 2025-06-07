@@ -9,13 +9,35 @@ let game_state = {
 
 const scopes = Object.freeze({
     SCENE: "scene",
-    ALL: "all"
+    ALL: "all",
+    NON_ROOT: "non_root",
+    JOIN_SCENE_NON_ROOT: "join_scene_non_root"
 });
 
 let settings = {
     debug_colliders: false,
+    disable_empty_interactables: false,
     enable_overflow_collision: false, // Should collidefrs outside the game area be enabled?
     target_resolution: { width: 1920, height: 1080 },
+    window_resize_boundary: {
+        min_width: 300,
+    },
+    modal: {
+        width: 1922,
+        height: 300,
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        color: "#FFFFFF",
+        fontFamily: "Times New Roman, serif",
+        zIndex: 1000,
+    },
+    modal_data: {
+        display_text: "",
+        text: "Modal content goes here",
+        text_stack: [],
+        typewritter_speed: 50,
+        typewritter_interval: null, // Interval for typewriter effect
+        modal_showing: false, 
+    }
 }; 
 
 const scene = () => {
@@ -32,6 +54,10 @@ function game_Init() {
     console.log("Game initialized");
     game_state.isRunning = true;
 
+    // Set the target resolution
+    const ar = settings.target_resolution.width / settings.target_resolution.height;
+    settings.window_resize_boundary.min_height = Math.round(settings.window_resize_boundary.min_width / ar);
+
     game_state.render_data.original = {
         width: settings.target_resolution.width || 1920,
         height: settings.target_resolution.height || 1080,
@@ -47,6 +73,9 @@ function game_Init() {
 
     // Add event listeners to portals
     game_InitPortals();
+
+    // Initialize modals
+    game_InitModals();
 }
 
 function game_InitScenes() {
@@ -91,6 +120,31 @@ const portal_data = {
     }
 };
 
+function game_InitModals() {
+
+    // Create modal interactables
+    let modal_y = settings.target_resolution.height - settings.modal.height;
+    const modal = new Interactable(
+        0, 
+        modal_y, 
+        settings.modal.width, 
+        settings.modal.height + 5,
+    );
+
+    // Add modal styles
+    const element = modal.element();
+    for (const [key, value] of Object.entries(settings.modal)) {
+        if (element.style[key] !== undefined)
+            element.style[key] = value;
+    }
+
+    modal.addHTML("<p style=\"padding-left: 3vh\">" + settings.modal_data.text + "</p>"); 
+    modal.addTag("modal"); // Add a tag for the modal interactable
+
+    game_RegisterInteractable("root", modal); // Register the modal interactable
+    t_HideModal(); // Hide the modal initially
+}
+
 function game_InitPortals() {
 
     // get portal image size
@@ -131,6 +185,7 @@ function game_InitPortals() {
                 );
     
                 // Set portal sprite
+                portal_interactable.addTag("portal");
                 portal_interactable.addSprite(positioning.sprite);
     
                 // Register the portal interactable
@@ -230,6 +285,8 @@ function r_DrawColliders() {
 
         interactables.forEach(interactable => {
 
+            if (settings.disable_empty_interactables && !interactable.action) return; // Skip if the interactable has no action
+
             let pos = m_CalculateInteractablePosition(interactable);
             let bounding_box = interactable.bounding_box;
 
@@ -240,6 +297,7 @@ function r_DrawColliders() {
 
             // Set collider styles
             collider.style.border = "1px solid red"; // Red border for visibility
+            collider.style.zIndex = 200;
 
             collider.style.left = `${pos.x}px`;
             collider.style.top = `${pos.y}px`;
@@ -298,21 +356,56 @@ function game_GetAllColliders(scope = scopes.SCENE) {
 
     if (scope === scopes.SCENE && game_state.currentScene) {
         
-        // Get colliders only from the current scene
-        colliders = game_state.currentScene?.interactables || [];
+        colliders = [...(game_state.currentScene.interactables || [])];
+
+        // Add root interactables if present
+        const rootInteractables = root()?.interactables || [];
+        colliders.push(...rootInteractables);
 
     } else if (scope === scopes.ALL) {
-
         // Get colliders from all scenes
         for (const scene_id in game_state.scene_map) {
-            colliders.push(...game_state.scene_map[scene_id].getColliders());
+            const scene = game_state.scene_map[scene_id];
+            if (scene?.interactables) {
+                colliders.push(...scene.interactables);
+            }
+        }
+
+    } else if (scope === scopes.NON_ROOT) {
+        // Get colliders from all scenes except the root
+        for (const scene_id in game_state.scene_map) {
+            if (scene_id !== "root") {
+                const scene = game_state.scene_map[scene_id];
+                if (scene?.interactables) {
+                    colliders.push(...scene.interactables);
+                }
+            }
+        }
+
+    } else if (scope === scopes.JOIN_SCENE_NON_ROOT) {
+        // Only current scene, without root
+        colliders = [...(game_state.currentScene?.interactables || [])];
+    }
+
+    return new Set(colliders);
+}
+
+function game_FindInteractablesOfTag(tag, scene = undefined) {
+
+    // Find interactables with a specific tag
+    let interactables = [];
+
+    if (scene) {
+        // If a specific scene is provided, search only in that scene
+        interactables = scene.interactables || [];
+    } else {
+        // Search in all scenes
+        for (const scene_id in game_state.scene_map) {
+            interactables.push(...game_state.scene_map[scene_id].interactables);
         }
     }
 
-    // Add root colliders
-    colliders.push(...root()?.interactables || []);
-
-    return new Set(colliders);
+    return interactables.filter(interactable => interactable.tags.includes(tag));
 }
 
 function m_CalculateScreenSize() {
@@ -362,13 +455,13 @@ function m_Clamp(num, min, max) {
 function r_UpdateInteractables() {
 
     // Disable all interactables initially
-    document.querySelectorAll(".interactable").forEach(element => {
-        element.style.display = "none"; 
+    game_GetAllColliders(scopes.NON_ROOT).forEach(interactable => {
+        interactable.element().style.display = "none"; 
     });
 
     // Update the positions of interactables based on the current scene
     if (!game_state.currentScene) return; // No current scene
-    let interactables = game_GetAllColliders(scopes.SCENE);
+    let interactables = game_GetAllColliders(scopes.JOIN_SCENE_NON_ROOT);
 
     interactables.forEach(interactable => {
         let pos = m_CalculateInteractablePosition(interactable);
@@ -417,16 +510,181 @@ function i_GetItem(item) {
     return game_state.inventory[item] || 0;
 }
 
+function t_DequeueModalText() {
+
+    // Dequeue the next text from the modal text stack
+    if (settings.modal_data.text_stack.length > 0) {
+        settings.modal_data.text = settings.modal_data.text_stack.shift();
+        return settings.modal_data.text;
+    } else {
+        console.warn("No more text in the modal text stack.");
+        return null; 
+    }
+}
+
+function t_UpdateModalText() {
+
+    const modal = game_FindInteractablesOfTag("modal", root())[0];
+    if (modal) {
+        const element = modal.element();
+        if (element) {
+            element.querySelector("p").textContent = settings.modal_data.display_text; // Update the text content
+        } else {
+            console.warn(`Element with id ${modal.id} not found.`);
+        }
+    } else {
+        console.warn("No modal interactable found.");
+    }
+}
+
+function t_ShowModal(text) {
+
+    const modal = game_FindInteractablesOfTag("modal", root())[0];
+    if (!modal) {
+        console.warn("No modal interactable found.");
+        return;
+    }
+
+    // Show the modal interactable
+    const element = modal.element();
+    if (element) {
+
+        if (Array.isArray(text)) {
+            // enqueue all texts
+            settings.modal_data.text_stack.push(...text);
+        } else if (typeof text === "string") {
+            // enqueue single text
+            settings.modal_data.text_stack.push(text);
+        } else {
+            console.warn("Invalid text format. Expected string or array of strings.");
+            return;
+        }
+        
+        settings.modal_data.text = t_DequeueModalText(); 
+
+        if (!settings.modal_data.text) {
+            console.warn("No text to display in the modal.");
+            return;
+        }
+
+        element.style.display = "block"; // Show the modal
+        settings.modal_data.modal_showing = true;
+
+        // Set the typewritter loop
+        settings.modal_data.typewritter_interval = setInterval(t_TypewritterEffect, settings.modal_data.typewritter_speed);
+
+    } else {
+        console.warn(`Element with id ${modal.id} not found.`);
+    }
+}
+
+function t_TypewritterEffect() {
+
+    const target_text = settings.modal_data.text;
+    if (!target_text) {
+        console.warn("No target text for typewriter effect.");
+        clearInterval(settings.modal_data.typewritter_interval); // Stop the typewriter effect
+        return;
+    }
+
+    const remaining_text = target_text.slice(settings.modal_data.display_text.length);
+
+    if (remaining_text.length > 0) {
+
+        // Append the next character to the display text
+        settings.modal_data.display_text += remaining_text.charAt(0);
+
+        // Update the modal text
+        t_UpdateModalText(); 
+
+    } else {
+
+        console.warn("No remaining text to display in the modal.");
+        clearInterval(settings.modal_data.typewritter_interval); // Stop the typewriter effect
+        return;
+    }
+}
+
+function t_StepModal() {
+
+    // Step through the modal text
+    if (settings.modal_data.text_stack.length > 0) {
+
+        const target_text = settings.modal_data.text;
+        if (!target_text) {
+            console.warn("No target text for stepping through modal.");
+            t_HideModal(); // Hide the modal if no text is available
+            return;
+        }
+        
+        const remaining_text = target_text.slice(settings.modal_data.display_text.length);
+
+        if (remaining_text.length == 0) {
+
+            // Get the next text from the stack
+            settings.modal_data.text = settings.modal_data.text_stack.shift();
+            settings.modal_data.display_text = ""; 
+            settings.modal_data.typewritter_interval = setInterval(t_TypewritterEffect, settings.modal_data.typewritter_speed);
+
+        } else {
+
+            // Finish typewritter animation
+            clearInterval(settings.modal_data.typewritter_interval);
+            settings.modal_data.display_text = settings.modal_data.text;
+
+            t_UpdateModalText(); // Update the modal text
+        }
+
+    } else {
+        
+        t_HideModal();
+    }
+
+}
+
+function t_HideModal() {
+    
+    const modal = game_FindInteractablesOfTag("modal", root())[0];
+    if (!modal) {
+        console.warn("No modal interactable found.");
+        return;
+    }
+    
+    // Hide the modal interactable
+    const element = modal.element();
+    if (element) {
+        element.style.display = "none"; // Hide the modal
+        settings.modal_data.modal_showing = false; 
+    } else {
+        console.warn(`Element with id ${modal.id} not found.`);
+    }
+
+}
+
 // Hook window resize
 window.addEventListener("resize", () => {
 
     // Update render data on window resize
     r_UpdateScreenSize();
     r_DrawGame(); // Redraw the game
+
+    // Prevent window from being resized below the minimum dimensions
+    if (
+        window.innerWidth < settings.window_resize_boundary.min_width ||
+        window.innerHeight < settings.window_resize_boundary.min_height
+    ) 
+        window.resizeTo(settings.window_resize_boundary.min_width, settings.window_resize_boundary.min_height);
 });
 
 // Hook mouse click events for interactables
 document.addEventListener("click", (event) => {
+
+    // Disable click on modal show
+    if (settings.modal_data.modal_showing) {
+        
+        t_StepModal();
+        return;
+    }
 
     if (!game_state.currentScene) return; // No current scene
 
@@ -466,10 +724,16 @@ export default {
     game_GotoScene,
     game_Exit,
     game_RegisterInteractable,
+    game_FindInteractablesOfTag,
+    root,
     settings,
     inventory: {
         i_AddItem,
         i_RemoveItem,
         i_GetItem
+    },
+    text: {
+        t_ShowModal,
+        t_HideModal
     }
 }

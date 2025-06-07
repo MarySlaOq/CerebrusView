@@ -29,6 +29,11 @@ html, body {
     cursor: pointer;
 }
 
+
+.interactable > p {
+    font-size: 3vh !important;
+}
+
 .portal {
     display: block;
     position: absolute;

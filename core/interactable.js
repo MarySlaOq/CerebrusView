@@ -5,6 +5,7 @@ class Interactable {
     original_bounding_box;
     action;
     sprite;
+    tags = []; // Tags for categorization or filtering
 
     constructor(x, y, width, height, action = null) {
 
@@ -29,7 +30,7 @@ class Interactable {
         element.style.top = `${y}px`;
         element.style.width = `${width}px`;
         element.style.height = `${height}px`;
-        element.style.zIndex = "1000"; 
+        element.style.zIndex = "100"; 
 
         if (action == null) {
             // Deactivate pointer events if no action is provided
@@ -66,6 +67,11 @@ class Interactable {
         }
     }
 
+    addTag(tag) {
+        if (!this.tags.includes(tag)) {
+            this.tags.push(tag);
+        }
+    }
 
     updatePosition(currentWidth, currentHeight, originalWidth, originalHeight, offsetX, offsetY) {
         
@@ -105,6 +111,28 @@ class Interactable {
             element.style.top = `${newY + offsetY}px`;
             element.style.width = `${newWidth}px`;
             element.style.height = `${newHeight}px`;
+        }
+
+        // Applly style to all children
+        var children = element.children;
+        for (let i = 0; i < children.length; i++) {
+
+            const child = children[i];
+
+            child.style.left = `${newX + offsetX}px`;
+            child.style.top = `${newY + offsetY}px`;
+            child.style.width = `${newWidth}px`;
+            child.style.height = `${newHeight}px`;
+        }
+    }
+
+    element() {
+        const element = document.getElementById(this.id);
+        if (element) {
+            return element;
+        } else {
+            console.warn(`Element with id ${this.id} not found.`);
+            return null;
         }
     }
 
