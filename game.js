@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Savee in the inventory that the cabinet has been opened
         Game.inventory.i_AddItem("sofa_opened");
         
-        Game.game_GotoScene("");
+        Game.game_GotoScene("sofa");
     });
 
     sofaimg.addSprite("imgs/LivingRoom_sofa.png"); // Add sprite to the trashcan interactable
@@ -164,9 +164,9 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Add hanger 
     //img
-    let hangerimg = new Interactable(1000, 600, 800, 800);
+    let hangerimg = new Interactable(960,83, 1000, 1000);
     //hitbox
-    let hanger = new Interactable(1290, 400, 120, 160, () => {
+    let hanger = new Interactable(1290, 83, 300, 1000, () => {
         // Check if the fridge has been opened before
         if (Game.inventory.i_GetItem("hanger_opened")) {  
             window.alert("You already opened this");          
@@ -177,7 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Savee in the inventory that the cabinet has been opened
         Game.inventory.i_AddItem("hanger_opened");
         
-        Game.game_GotoScene("");
+        Game.game_GotoScene("hanger");
     });
 
     hangerimg.addSprite("imgs/LivingRoom_hanger.png"); // Add sprite to the trashcan interactable
@@ -221,21 +221,24 @@ document.addEventListener("DOMContentLoaded", () => {
         // Savee in the inventory that the cabinet has been opened
         Game.inventory.i_AddItem("tv_opened");
         
-        Game.game_GotoScene("");
+        Game.game_GotoScene("coffee");
     });
 
     coffeeimg.addSprite("imgs/LivingRoom_coffeetable.png"); // Add sprite to the trashcan interactable
     Game.game_RegisterInteractable("LivingRoom", coffeeimg);
     Game.game_RegisterInteractable("LivingRoom", coffee);
 
-
+    //controler
+    let remoteimg = new Interactable;
+    remoteimg.addSprite("imgs/coffeetable_remotechanges2.png"); // Add sprite to the trashcan interactable
+    Game.game_RegisterInteractable("coffee", remoteimg);
 
 
     // Add tvstand 
     //img
-    let tvimg = new Interactable(828, 294, 450, 450);
+    let tvimg = new Interactable(828, 297, 450, 450);
     //hitbox
-    let tv = new Interactable(2000, 720, 120, 160, () => {
+    let tv = new Interactable(828, 297, 450, 300, () => {
         // Check if the fridge has been opened before
         if (Game.inventory.i_GetItem("tv_opened")) {  
             window.alert("You already opened this");          
@@ -246,13 +249,26 @@ document.addEventListener("DOMContentLoaded", () => {
         // Savee in the inventory that the cabinet has been opened
         Game.inventory.i_AddItem("tv_opened");
         
-        Game.game_GotoScene("");
+        Game.game_GotoScene("tv");
+    });
+    let tv2 = new Interactable(1080, 297, 200, 425, () => {
+        // Check if the fridge has been opened before
+        if (Game.inventory.i_GetItem("tv_opened")) {  
+            window.alert("You already opened this");          
+            return;
+        }
+        
+        tvimg.addSprite("imgs/Kitchen_trash-open.png"); // Add sprite to the trashcan interactable
+        // Savee in the inventory that the cabinet has been opened
+        Game.inventory.i_AddItem("tv_opened");
+        
+        Game.game_GotoScene("tv");
     });
 
     tvimg.addSprite("imgs/LivingRoom_tvstand.png"); // Add sprite to the trashcan interactable
     Game.game_RegisterInteractable("LivingRoom", tvimg);
     Game.game_RegisterInteractable("LivingRoom", tv);
-
+    Game.game_RegisterInteractable("LivingRoom", tv2);
 
 // Add scenes  hitbox = lados esq/right, up/down, hitbox sides size, hitbox height size )
     // fridge
@@ -344,6 +360,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }));
 });
 
+                //livingroom
     //sofa
 
     Game.game_RegisterInteractable("sofa", new Interactable(600, 180, 750, 750, () => {
@@ -354,6 +371,23 @@ document.addEventListener("DOMContentLoaded", () => {
     Game.game_RegisterInteractable("petbowl-eat", new Interactable(320, 250, 1400, 850, () => {
         console.log("Cabinet closed");
         Game.game_GotoScene("Kitchen");
+    }));
+
+    //coffeeset
+
+    Game.game_RegisterInteractable("coffee", new Interactable(600, 180, 750, 750, () => {
+        console.log("sofa opened");
+        Game.game_GotoScene("coffee1");
+    }));
+    
+    Game.game_RegisterInteractable("coffee1", new Interactable(320, 250, 1400, 850, () => {
+        console.log("Cabinet closed");
+        window.open("coffe2.html", '_self');
+    }));
+
+    Game.game_RegisterInteractable("coffee2.html", new Interactable(600, 180, 750, 750, () => {
+        console.log("sofa opened");
+        Game.game_GotoScene("coffee3");
     }));
 
 //sounds
