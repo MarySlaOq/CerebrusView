@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Savee in the inventory that the cabinet has been opened
         Game.inventory.i_AddItem("tv_opened");
         
-        Game.game_GotoScene("coffee");
+        Game.game_GotoScene("coffee0");
         remote_routine(); 
     });
 
@@ -239,7 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-        // Add tvstand 
+    // Add tvstand 
     //img
     let tvimg = new Interactable(828, 297, 450, 450);
     //hitbox
@@ -374,6 +374,9 @@ document.addEventListener("DOMContentLoaded", () => {
         Game.game_GotoScene("Kitchen");
     }));
 
+                                              //living room
+
+    //sofa
 
     //sofa
 
@@ -386,6 +389,24 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Cabinet closed");
         Game.game_GotoScene("Kitchen");
     }));
+
+    //coffeeset
+
+    Game.game_RegisterInteractable("coffee0", new Interactable(600, 180, 750, 750, () => {
+        console.log("sofa opened");
+        Game.game_GotoScene("coffee");
+    }));
+    
+    Game.game_RegisterInteractable("coffee", new Interactable(320, 250, 1400, 850, () => {
+        console.log("Cabinet closed");
+        Game.game_GotoScene("coffee1");
+    }));
+
+    Game.game_RegisterInteractable("coffee1", new Interactable(600, 180, 750, 750, () => {
+        console.log("sofa opened");
+        Game.game_GotoScene("LivingRoom");
+    }));
+
 
     // Register remote
     // <img id="remote" src="imgs/coffeetable_remotechanges1.png" alt="" draggable="false"> 
