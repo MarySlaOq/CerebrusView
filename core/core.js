@@ -243,7 +243,7 @@ function game_RegisterInteractable(scene, interactable) {
     // Default to root scene if no scene is specified
     if (scene == undefined) scene = "root";
 
-    game_state.scene_map[scene].addInteractable(interactable);
+    game_state.scene_map[scene]?.addInteractable(interactable);
     r_DrawGame(); // Initial render of the game
 }
 
