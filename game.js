@@ -226,12 +226,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // Savee in the inventory that the cabinet has been opened
         Game.inventory.i_AddItem("coffee_opened");
         
-<<<<<<< HEAD
-        Game.game_GotoScene("coffee");
-=======
         Game.game_GotoScene("coffee0");
         remote_routine(); 
->>>>>>> freakybox
     });
 
     coffeeimg.addSprite("imgs/LivingRoom_coffeetable.png"); // Add sprite to the trashcan interactable
@@ -241,12 +237,8 @@ document.addEventListener("DOMContentLoaded", () => {
     //controler
     let remoteimg = new Interactable;
     remoteimg.addSprite("imgs/coffeetable_remotechanges2.png"); // Add sprite to the trashcan interactable
-<<<<<<< HEAD
-    Game.game_RegisterInteractable("coffee2", remoteimg);
-=======
     Game.game_RegisterInteractable("coffee", remoteimg);
 
->>>>>>> freakybox
 
 
     // Add tvstand 
@@ -273,11 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
         
-<<<<<<< HEAD
-        tvimg.addSprite("imgs/Kitchen_trash-open.png"); // Add sprite to the trashcan interactable
-=======
         tvimg.addSprite("imgs/LivingRoom_messytvstand.png"); // Add sprite to the trashcan interactable
->>>>>>> freakybox
         // Savee in the inventory that the cabinet has been opened
         Game.inventory.i_AddItem("tv_opened");
         
@@ -288,10 +276,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Game.game_RegisterInteractable("LivingRoom", tvimg);
     Game.game_RegisterInteractable("LivingRoom", tv);
     Game.game_RegisterInteractable("LivingRoom", tv2);
-<<<<<<< HEAD
-=======
 
->>>>>>> freakybox
 
 // Add scenes  hitbox = lados esq/right, up/down, hitbox sides size, hitbox height size )
     // fridge
@@ -393,7 +378,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                                               //living room
 
-                //livingroom
     //sofa
 
     //sofa
@@ -597,23 +581,6 @@ function remote_routine() {
     document.addEventListener("mouseup", pararTudo);
     document.addEventListener("mouseleave", pararTudo);
 }
-
-    //coffeeset
-
-    Game.game_RegisterInteractable("coffee", new Interactable(600, 180, 750, 750, () => {
-        console.log("sofa opened");
-        Game.game_GotoScene("coffee1");
-    }));
-    
-    Game.game_RegisterInteractable("coffee1", new Interactable(320, 250, 1400, 850, () => {
-        console.log("Cabinet closed");
-        window.open("coffe2.html", '_self');
-    }));
-
-    Game.game_RegisterInteractable("coffee2.html", new Interactable(600, 180, 750, 750, () => {
-        console.log("sofa opened");
-        Game.game_GotoScene("coffee3");
-    }));
 
 //sounds
 function playSound(fileName){
