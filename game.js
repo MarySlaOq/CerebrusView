@@ -174,17 +174,18 @@ document.addEventListener("DOMContentLoaded", () => {
     let hangerimg = new Interactable(960,83, 1000, 1000);
     //hitbox
     let hanger = new Interactable(1290, 83, 300, 1000, () => {
+
+        //const allChecked = neededItems.every(key => Game.inventory.i_GetItem(key));
         // Check if the fridge has been opened before
-        if (Game.inventory.i_GetItem("hanger_opened")) {  
-                     
-            return;
-        }
-        
-        tvimg.addSprite("imgs/LivingRoom_hanger.png"); // Add sprite to the trashcan interactable
+        if (Game.inventory.i_GetItem("fridge_opened" && "cabinet_opened" && "trash_opened" && "sofa_opened" && "book_opened" && "coffee_opened" && "tv_opened" && "hanger_opened")) {  
+           tvimg.addSprite("imgs/LivingRoom_hanger.png"); // Add sprite to the trashcan interactable
         // Savee in the inventory that the cabinet has been opened
         Game.inventory.i_AddItem("hanger_opened");
         
         Game.game_GotoScene("hanger");
+        }
+        
+        
     });
 
     hangerimg.addSprite("imgs/LivingRoom_hanger.png"); // Add sprite to the trashcan interactable
@@ -202,7 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
         
-        bookimg.addSprite("imgs/LivingRoom_messybookshelf.png", (550, 250, 330, 330)); // Add sprite to the trashcan interactable
+        bookimg.addSprite("imgs/LivingRoom_messybookshelf2.png", (550, 250, 330, 330)); // Add sprite to the trashcan interactable
         // Savee in the inventory that the cabinet has been opened
         Game.inventory.i_AddItem("book_opened");
         
