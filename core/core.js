@@ -490,6 +490,7 @@ function i_AddItem(item) {
     game_state.inventory[item]++;
     console.log(`Added ${item} to inventory. Total: ${game_state.inventory[item]}`);
 
+
     
 }
 
