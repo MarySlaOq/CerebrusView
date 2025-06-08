@@ -78,7 +78,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Check if the fridge has been opened before
         if (Game.inventory.i_GetItem("cabinet_opened")) {
-            window.alert("You already opened this");
             return;
         }
         cabinetimg.addSprite("imgs/Kitchen_messycabinets.png"); // Add sprite to the trashcan interactable
@@ -117,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Check if the fridge has been opened before
         if (Game.inventory.i_GetItem("trash_opened")) {  
-            window.alert("You already opened this");          
+                    
             return;
         }
         
@@ -142,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let sofa = new Interactable(150, 590, 850, 400, () => {
         // Check if the fridge has been opened before
         if (Game.inventory.i_GetItem("sofa_opened")) {  
-            window.alert("You already opened this");          
+                    
             return;
         }
         
@@ -167,6 +166,9 @@ document.addEventListener("DOMContentLoaded", () => {
     Game.game_RegisterInteractable("LivingRoom", nose);
 
     
+    
+
+
     // Add hanger 
     //img
     let hangerimg = new Interactable(960,83, 1000, 1000);
@@ -174,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let hanger = new Interactable(1290, 83, 300, 1000, () => {
         // Check if the fridge has been opened before
         if (Game.inventory.i_GetItem("hanger_opened")) {  
-            window.alert("You already opened this");          
+                     
             return;
         }
         
@@ -196,11 +198,11 @@ document.addEventListener("DOMContentLoaded", () => {
     let book = new Interactable(480, 250, 275, 320, () => {
         // Check if the fridge has been opened before
         if (Game.inventory.i_GetItem("book_opened")) {  
-            window.alert("You already opened this");          
+                      
             return;
         }
         
-        bookimg.addSprite("imgs/LivingRoom_messybookshelf.png"); // Add sprite to the trashcan interactable
+        bookimg.addSprite("imgs/LivingRoom_messybookshelf.png", (550, 250, 330, 330)); // Add sprite to the trashcan interactable
         // Savee in the inventory that the cabinet has been opened
         Game.inventory.i_AddItem("book_opened");
         
@@ -218,7 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let coffee = new Interactable(1000, 610, 75, 140, () => {
         // Check if the fridge has been opened before
         if (Game.inventory.i_GetItem("coffee_opened")) {  
-            window.alert("You already opened this");          
+                   
             return;
         }
         
@@ -248,7 +250,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let tv = new Interactable(828, 297, 450, 300, () => {
         // Check if the fridge has been opened before
         if (Game.inventory.i_GetItem("tv_opened")) {  
-            window.alert("You already opened this");          
+                     
             return;
         }
         
@@ -261,7 +263,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let tv2 = new Interactable(1080, 297, 200, 425, () => {
         // Check if the fridge has been opened before
         if (Game.inventory.i_GetItem("tv_opened")) {  
-            window.alert("You already opened this");          
+                     
             return;
         }
         
@@ -410,8 +412,8 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("sofa opened");
         Game.game_GotoScene("coffee");
     }));
-    
-    Game.game_RegisterInteractable("coffee", new Interactable(320, 250, 1400, 850, () => {
+    25
+    Game.game_RegisterInteractable("coffee", new Interactable(0, 0, 0, 0, () => {
         console.log("Cabinet closed");
         Game.game_GotoScene("coffee1");
     }));
@@ -512,6 +514,7 @@ function remote_routine() {
     const TEMPO_PARA_TROCAR_1 = 3000;
     const TEMPO_PARA_TROCAR_2 = 3000 + TEMPO_PARA_TROCAR_1;
     const TEMPO_PARA_TROCAR_3 = 3000 + TEMPO_PARA_TROCAR_2;
+    const TEMPO_PARA_TROCAR_4 = 3000 + TEMPO_PARA_TROCAR_3;
 
     let tempoPressionado = 0;
     let ultimaAtualizacao = 0;
@@ -533,9 +536,28 @@ function remote_routine() {
         estadoAtual = 3;
       } else if (tempoPressionado >= TEMPO_PARA_TROCAR_3 && estadoAtual < 4) {
         remote_img.src = "imgs/coffeetable_remotechanges4.png";
-        estadoAtual = 4;
+        estadoAtual = 4;        
+      } else if (tempoPressionado >= TEMPO_PARA_TROCAR_4 && estadoAtual < 5) {
+        remote_img.src = "imgs/coffeetable_remotechanges4.png";
+        estadoAtual = 5;        
       }
+
+      hide();
     }
+
+    
+    function hide() {
+        const arrow = document.getElementById('remotearrow');
+        if (!arrow) return;
+
+        if (estadoAtual === 5) {
+            arrow.removeAttribute("hidden");
+            Game.game_GotoScene("coffee1");
+        } else {
+            arrow.setAttribute("hidden","");
+        }
+    }
+
 
     function loopDeAtualizacao() {
 
