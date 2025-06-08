@@ -489,6 +489,8 @@ function i_AddItem(item) {
 
     game_state.inventory[item]++;
     console.log(`Added ${item} to inventory. Total: ${game_state.inventory[item]}`);
+
+    
 }
 
 function i_RemoveItem(item, count = 1) {
@@ -508,6 +510,17 @@ function i_RemoveItem(item, count = 1) {
 
 function i_GetItem(item) {
     return game_state.inventory[item] || 0;
+
+    const neededItems = [
+        "fridge_opened",
+        "cabinet_opened",
+        "trash_opened",
+        "sofa_opened",
+        "book_opened",
+        "coffee_opened",
+        "tv_opened"
+
+    ]
 }
 
 function t_DequeueModalText() {
