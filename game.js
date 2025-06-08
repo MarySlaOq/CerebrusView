@@ -178,15 +178,14 @@ document.addEventListener("DOMContentLoaded", () => {
         //const allChecked = neededItems.every(key => Game.inventory.i_GetItem(key));
         // Check if the fridge has been opened before
         if (Game.inventory.i_GetItem("fridge_opened" && "cabinet_opened" && "trash_opened" && "sofa_opened" && "book_opened" && "coffee_opened" && "tv_opened" && "hanger_opened")) {  
-                     
-            return;
-        }
-        
-        tvimg.addSprite("imgs/LivingRoom_hanger.png"); // Add sprite to the trashcan interactable
+           tvimg.addSprite("imgs/LivingRoom_hanger.png"); // Add sprite to the trashcan interactable
         // Savee in the inventory that the cabinet has been opened
         Game.inventory.i_AddItem("hanger_opened");
         
         Game.game_GotoScene("hanger");
+        }
+        
+        
     });
 
     hangerimg.addSprite("imgs/LivingRoom_hanger.png"); // Add sprite to the trashcan interactable
