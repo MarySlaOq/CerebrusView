@@ -2,14 +2,14 @@ import Game from './core/core.js';
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    Game.settings.debug_colliders = true; // Enable debug colliders
+    Game.settings.debug_colliders = false; // Enable debug colliders
     Game.settings.disable_empty_interactables = true; // Disable empty interactables
     Game.settings.target_resolution = { width: 1920, height: 1080 }; // Set aspect ratio to 16:9
 
     Game.game_Init();
 
     const timer = new Interactable(0, 0, 150, 100);
-    const start_time = 15;
+    const start_time = 90;
     let time = start_time;
 
     timer.addHTML("<p id='timer'>00:00</p>");
@@ -177,14 +177,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
         //const allChecked = neededItems.every(key => Game.inventory.i_GetItem(key));
         // Check if the fridge has been opened before
-        if (Game.inventory.i_GetItem("fridge_opened" && "cabinet_opened" && "trash_opened" && "sofa_opened" && "book_opened" && "coffee_opened" && "tv_opened" && "hanger_opened")) {  
-           
-        }
-        hangerimg.addSprite("imgs/LivingRoom_hanger.png"); // Add sprite to the trashcan interactable
-        // Savee in the inventory that the cabinet has been opened
-        Game.inventory.i_AddItem("hanger_opened");
+        if (Game.inventory.i_GetItem("fridge_opened") && Game.inventory.i_GetItem("cabinet_opened") && Game.inventory.i_GetItem("trash_opened")&& Game.inventory.i_GetItem("sofa_opened")&& Game.inventory.i_GetItem("book_opened")&& Game.inventory.i_GetItem("coffee_opened") && Game.inventory.i_GetItem("tv_opened")) {
+            
+            
+             
+           hangerimg.addSprite("imgs/LivingRoom_hanger.png"); // Add sprite to the trashcan interactable
+            // Savee in the inventory that the cabinet has been opened
+            Game.inventory.i_AddItem("hanger_opened");
         
-        Game.game_GotoScene("hanger");
+           Game.game_GotoScene("hanger");
+        } else {
+            Game.text.t_ShowModal("There's more to destroy!");
+        }
+        
         
         
     });
@@ -413,14 +418,14 @@ document.addEventListener("DOMContentLoaded", () => {
     Game.game_RegisterInteractable("coffee0", new Interactable(600, 180, 750, 750, () => {
         console.log("sofa opened");
         Game.game_GotoScene("coffee");
+        Game.text.t_ShowModal("Let's shake this!!!!");
     }));
-    25
     Game.game_RegisterInteractable("coffee", new Interactable(0, 0, 0, 0, () => {
         console.log("Cabinet closed");
         Game.game_GotoScene("coffee1");
     }));
 
-    Game.game_RegisterInteractable("coffee1", new Interactable(600, 180, 750, 750, () => {
+    Game.game_RegisterInteractable("coffee1", new Interactable(350, 180, 700, 300, () => {
         console.log("sofa opened");
         Game.game_GotoScene("LivingRoom");
         
@@ -486,10 +491,12 @@ document.addEventListener("DOMContentLoaded", () => {
     Game.game_RegisterInteractable("hanger3", new Interactable(300, 180, 1200, 750, () => {
         console.log("sofa opened");
         Game.game_GotoScene("hanger4");
+        Game.text.t_ShowModal(["o teu texto gay1", "a tua outra pagina de texto gay", "ainda mais uma pagina de texto gay #yup"]);
     }));
     Game.game_RegisterInteractable("hanger4", new Interactable(300, 180, 1200, 750, () => {
         console.log("sofa opened");
-        window.open("end.html", "_self");
+        //window.open("end.html", "_self");
+        
     }));
 
 
