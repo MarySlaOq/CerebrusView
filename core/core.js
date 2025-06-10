@@ -27,14 +27,14 @@ let settings = {
         height: 300,
         backgroundColor: "rgba(0, 0, 0, 0.5)",
         color: "#FFFFFF",
-        fontFamily: "Times New Roman, serif",
+        fontFamily: "font",
         zIndex: "1000",
     },
     modal_data: {
         display_text: "",
         text: "Modal content goes here",
         text_stack: [],
-        typewritter_speed: 50,
+        typewritter_speed: 60,
         typewritter_interval: null, // Interval for typewriter effect
         modal_showing: false, 
     }

@@ -5,28 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        h1 {
-            display: block;
-            text-align: center;
-            position: relative;
-            top: 70px;
+        @font-face {
+            font-family: font;
+            src: url(core/Neat\ Chalk.ttf);
         }
-
-        a{
-            display: block;
-            text-align: center;
-            position: relative;
-            top: 200px;
-            font-size: 60px;
+        body{
+            background-color: #F3F2E9;
         }
+        #box {
+            background-color: #ba9e44;
+            position: absolute;
+            left: 35%;
+            top: 15%;
+            border-radius: 20px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            font-family: "font";
+            justify-content: center;
+            width: 700px;
+            height: 700px;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        #box a {
+            text-align: center;
+            padding: auto;
+            text-decoration: none;
+            font-size: 100px;
+            list-style: none;
+        }
+        
 
 
     </style>
 </head>
 <body>
-    <h1>Wlcomd</h1>
 
-    <a href="index.html">Play</a>
+    <div id="box">
+
+        <a href="index.html">Play</a>
+
+        
+
+    </div>
+    
     
 </body>
 </html>

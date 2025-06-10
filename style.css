@@ -1,9 +1,18 @@
+@font-face {
+  font-family: font;
+  src: url(core/Neat\ Chalk.ttf);
+}
+
 
 #timer {
-  background-color:cornflowerblue;
+  background: #b49b48;
   padding: 10px;
+  display: flex;
+  align-items: center;
+  border-radius: 9px;
   text-align: center;
-  font-size: 2vh;
+  font-size: 10px;
+  font-family: font;
 }
 
 img {  

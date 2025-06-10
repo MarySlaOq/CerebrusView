@@ -9,26 +9,30 @@ document.addEventListener("DOMContentLoaded", () => {
     Game.game_Init();
 
     const timer = new Interactable(0, 0, 150, 100);
-    const start_time = 90;
+    const start_time = 300;
     let time = start_time;
 
     timer.addHTML("<p id='timer'>00:00</p>");
 
     // timer code
-    setInterval(() => {
+    const timerInterval = setInterval(() => {
         const timerElement = document.getElementById("timer");
         if (timerElement) {
-            
+
             const minutes = Math.floor(time / 60);
             const seconds = time % 60;
             timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-
-            time--;
             
+            
+            // Check if timer has ended BEFORE decrementing
+            if (time <= 0) {
+                clearInterval(timerInterval);
+                Game.game_GotoScene("ending2");
+            }
+            
+            time--; // Decrement after the check
         }
-            
-
-    }, 1000); // Update every second
+    }, 1000);
 
     Game.game_RegisterInteractable(undefined, timer);
 
@@ -177,15 +181,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
         //const allChecked = neededItems.every(key => Game.inventory.i_GetItem(key));
         // Check if the fridge has been opened before
-        if (Game.inventory.i_GetItem("fridge_opened") && Game.inventory.i_GetItem("cabinet_opened") && Game.inventory.i_GetItem("trash_opened")&& Game.inventory.i_GetItem("sofa_opened")&& Game.inventory.i_GetItem("book_opened")&& Game.inventory.i_GetItem("coffee_opened") && Game.inventory.i_GetItem("tv_opened")) {
+        if (Game.inventory.i_GetItem("fridge_opened")
+            && Game.inventory.i_GetItem("cabinet_opened")
+            && Game.inventory.i_GetItem("trash_opened")
+            && Game.inventory.i_GetItem("sofa_opened")
+            && Game.inventory.i_GetItem("book_opened")
+            && Game.inventory.i_GetItem("coffee_opened")
+            && Game.inventory.i_GetItem("tv_opened")) {
             
-            
-             
-           hangerimg.addSprite("imgs/LivingRoom_hanger.png"); // Add sprite to the trashcan interactable
+           
             // Savee in the inventory that the cabinet has been opened
             Game.inventory.i_AddItem("hanger_opened");
         
            Game.game_GotoScene("hanger");
+        } else if (Game.inventory.i_GetItem("fridge_opened")) {
+            Game.game_GotoScene("ending1");
+
+        } else if (Game.inventory.i_GetItem("cabinet_opened")) {
+            Game.game_GotoScene("ending1");
+
+        } else if (Game.inventory.i_GetItem("trash_opened")) {
+            Game.game_GotoScene("ending1");
+
+        } else if (Game.inventory.i_GetItem("sofa_opened")) {
+            Game.game_GotoScene("ending1");
+
+        } else if (Game.inventory.i_GetItem("book_opened")) {
+            Game.game_GotoScene("ending1");
+
+        } else if (Game.inventory.i_GetItem("coffee_opened")) {
+            Game.game_GotoScene("ending1");
+            
+        } else if (Game.inventory.i_GetItem("tv_opened")) {
+            Game.game_GotoScene("ending1");
+
         } else {
             Game.text.t_ShowModal("There's more to destroy!");
         }
@@ -472,7 +501,7 @@ document.addEventListener("DOMContentLoaded", () => {
         Game.game_GotoScene("LivingRoom");
     }));
 
-    //hanger
+    //hanger = enging 3
     Game.game_RegisterInteractable("hanger", new Interactable(300, 180, 1200, 750, () => {
         console.log("sofa opened");
         Game.game_GotoScene("hanger1");
@@ -488,12 +517,30 @@ document.addEventListener("DOMContentLoaded", () => {
     Game.game_RegisterInteractable("hanger3", new Interactable(300, 180, 1200, 750, () => {
         console.log("sofa opened");
         Game.game_GotoScene("hanger4");
-        Game.text.t_ShowModal(["o teu texto gay1", "a tua outra pagina de texto gay", "ainda mais uma pagina de texto gay #yup"]);
+        Game.text.t_ShowModal([
+            "Adril: Petter....", "Petter: Y-Yes?...", "Adril: You're cleaning this up.", "Petter: Ah... Okay..."
+        ]);
     }));
     Game.game_RegisterInteractable("hanger4", new Interactable(300, 180, 1200, 750, () => {
         console.log("sofa opened");
         //window.open("end.html", "_self");
         
+    }));
+
+    //end countdown = ending 2
+    Game.game_RegisterInteractable("ending2", new Interactable(300, 180, 1200, 750, () => {
+        console.log("sofa opened");
+        Game.text.t_ShowModal([
+            "Petter: You're such a good boy!! See, I knew he'd be fine", "Adril: You're right, you're right. Good job Cerebrus."]);
+        Game.game_GotoScene("");
+    }));
+
+    //end countdown = ending 1
+    Game.game_RegisterInteractable("ending1", new Interactable(300, 180, 1200, 750, () => {
+        console.log("sofa opened");
+        Game.text.t_ShowModal([
+            "Petter: Ermm... I'm not cleaning this up.", "Adril: Yes you are."]);
+        Game.game_GotoScene("");
     }));
 
 
@@ -517,10 +564,10 @@ function remote_routine() {
     remote.style.zIndex = "9999";
     remote.style.pointerEvents = "auto"; 
 
-    const TEMPO_PARA_TROCAR_1 = 3000;
-    const TEMPO_PARA_TROCAR_2 = 3000 + TEMPO_PARA_TROCAR_1;
-    const TEMPO_PARA_TROCAR_3 = 3000 + TEMPO_PARA_TROCAR_2;
-    const TEMPO_PARA_TROCAR_4 = 3000 + TEMPO_PARA_TROCAR_3;
+    const TEMPO_PARA_TROCAR_1 = 1500;
+    const TEMPO_PARA_TROCAR_2 = 1500 + TEMPO_PARA_TROCAR_1;
+    const TEMPO_PARA_TROCAR_3 = 1500 + TEMPO_PARA_TROCAR_2;
+    const TEMPO_PARA_TROCAR_4 = 1500 + TEMPO_PARA_TROCAR_3;
 
     let tempoPressionado = 0;
     let ultimaAtualizacao = 0;
