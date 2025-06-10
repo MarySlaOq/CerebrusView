@@ -192,28 +192,33 @@ document.addEventListener("DOMContentLoaded", () => {
            
             // Savee in the inventory that the cabinet has been opened
             Game.inventory.i_AddItem("hanger_opened");
-        
+            clearInterval(timerInterval);
            Game.game_GotoScene("hanger");
         } else if (Game.inventory.i_GetItem("fridge_opened")) {
             Game.game_GotoScene("ending1");
-
+            clearInterval(timerInterval);
         } else if (Game.inventory.i_GetItem("cabinet_opened")) {
             Game.game_GotoScene("ending1");
-
+            clearInterval(timerInterval);
         } else if (Game.inventory.i_GetItem("trash_opened")) {
             Game.game_GotoScene("ending1");
+            clearInterval(timerInterval);
 
         } else if (Game.inventory.i_GetItem("sofa_opened")) {
             Game.game_GotoScene("ending1");
+            clearInterval(timerInterval);
 
         } else if (Game.inventory.i_GetItem("book_opened")) {
             Game.game_GotoScene("ending1");
+            clearInterval(timerInterval);
 
         } else if (Game.inventory.i_GetItem("coffee_opened")) {
-            Game.game_GotoScene("ending1");
+           Game.game_GotoScene("ending1");
+            clearInterval(timerInterval);
             
         } else if (Game.inventory.i_GetItem("tv_opened")) {
             Game.game_GotoScene("ending1");
+            clearInterval(timerInterval);
 
         } else {
             Game.text.t_ShowModal("There's more to destroy!");
@@ -531,8 +536,9 @@ document.addEventListener("DOMContentLoaded", () => {
     Game.game_RegisterInteractable("ending2", new Interactable(300, 180, 1200, 750, () => {
         console.log("sofa opened");
         Game.text.t_ShowModal([
-            "Petter: You're such a good boy!! See, I knew he'd be fine!", "Adril: You're right, you're right. Good job Cerebrus."]);
-        Game.game_GotoScene("");
+            "Petter: You're such a good boy!! See?! I knew he'd be fine!", "Adril: You're right, you're right. Good job Cerebrus."]);
+        
+            Game.game_GotoScene("");
     }));
 
     //end countdown = ending 1
