@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Game.game_Init();
 
     const timer = new Interactable(0, 0, 150, 100);
-    const start_time = 300;
+    const start_time = 180;
     let time = start_time;
 
     timer.addHTML("<p id='timer'>00:00</p>");
