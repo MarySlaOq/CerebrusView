@@ -218,6 +218,14 @@ function game_LoadScene(scene) {
     console.log(`Scene ${scene.scene_id} loaded`);
     game_state.currentScene = scene; 
 
+    // Play the sound effect
+    let sound = document.getElementById("shotGun");
+    if (sound) {
+        sound.play();
+    } else {
+        console.error("Sound element not found");
+    }
+
     r_DrawGame(); // Render the game after loading the scene
 }
 

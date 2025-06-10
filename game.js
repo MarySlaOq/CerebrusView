@@ -2,7 +2,7 @@ import Game from './core/core.js';
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    Game.settings.debug_colliders = true; // Enable debug colliders
+    Game.settings.debug_colliders = false; // Enable debug colliders
     Game.settings.disable_empty_interactables = true; // Disable empty interactables
     Game.settings.target_resolution = { width: 1920, height: 1080 }; // Set aspect ratio to 16:9
 
@@ -531,7 +531,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Game.game_RegisterInteractable("ending2", new Interactable(300, 180, 1200, 750, () => {
         console.log("sofa opened");
         Game.text.t_ShowModal([
-            "Petter: You're such a good boy!! See, I knew he'd be fine", "Adril: You're right, you're right. Good job Cerebrus."]);
+            "Petter: You're such a good boy!! See, I knew he'd be fine!", "Adril: You're right, you're right. Good job Cerebrus."]);
         Game.game_GotoScene("");
     }));
 
