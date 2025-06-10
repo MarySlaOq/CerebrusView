@@ -614,7 +614,7 @@ function remote_routine() {
 }
 
 //sounds
-function playSound(fileName){
+function play(fileName){
     document.getElementById("shotGun").setAttribute('src', fileName);
     document.getElementById("button").setAttribute('src', fileName);
    // document.getElementById("shotGun").load(); //call this to just preload the audio without playing
