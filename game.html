@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="core/elements.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Le game</title>
+
+    <script src="core/scene.js"></script>
+    <script src="core/interactable.js"></script>
+
+</head>
+<body>
+    <audio loop autoplay><source src="sounds/Samba2.wav" type="audio/mpeg">Your browser does not support the audio element..</audio>
+    
+
+    <div id="game">
+
+        <div id="scene"></div>
+
+        <div id="Kitchen" class="scene active">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/Kitchen_Noobject.jpg" alt="">
+                 
+                <audio id="shotGun" src="sounds/shotgun.wav" preload="auto" ></audio><span href="LivingRoom" onclick="document.getElementById('shotGun').play()" class="portal right"></span>
+            </div>
+        </div>
+
+        <div id="LivingRoom" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/LivingRoom.jpg" alt="">
+                <audio id="button" src="sounds/button.wav" preload="auto" ></audio><span href="Kitchen" onclick="document.getElementById('button').play()" class="portal left"></span>
+            </div>
+        </div>
+
+        
+<!-- Fridge -->
+
+        <div id="Fridge" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/Fridge_closed.jpg" alt="">
+            </div>
+        </div>
+
+        <div id="FridgeOpen" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/Fridge_opening.jpg" alt="">                
+            </div>
+        </div>
+        <div id="FridgeMessy" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/Fridge_messy.jpg" alt="">                
+            </div>
+        </div>
+
+        <!-- Cabinet test -->
+
+        <div id="Cabinet" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/cabinet.png" alt="">
+                <span href="Kitchen" class="portal right"></span>
+            </div>
+        </div>
+        
+        <div id="CabinetOpen" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/cabinet-open.png" alt="">
+                <span href="Kitchen" class="portal right"></span>
+            </div>
+        </div>
+
+        <!-- petbowl -->
+
+        <div id="petbowl" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/petbowl.jpg" alt="">
+            </div>
+        </div>
+        
+        <div id="petbowl-eat" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/petbowl_eating.jpg" alt="">
+            </div>
+        </div>
+
+        <div id="petbowl-drink" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/petbowlwater.jpg" alt="">
+            </div>
+        </div>
+
+        <!-- trash -->
+
+        <div id="trash" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/Trash_closed.jpg" alt="">
+            </div>
+        </div>
+        
+        <div id="trashOpen" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/Trash_opening.jpg" alt="">
+            </div>
+        </div>
+        <div id="trashSniff" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/Trash_sniff.jpg" alt="">
+            </div>
+        </div>
+        <div id="trashBroken" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/Trash_broken.jpg" alt="">
+            </div>
+        </div>
+
+        <!-- Cabinet  -->
+
+        <div id="cabinet" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/cabinets_closed.jpg" alt="">
+            </div>
+        </div>
+        
+        <div id="cabinetOpening" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/cabinets_opening.jpg" alt="">
+            </div>
+        </div>
+        <div id="cabinetGroceries" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/cabinets_groceries.jpg" alt="">
+            </div>
+        </div>
+
+        <div id="cabinetEating" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/cabinets_eating.jpg" alt="">
+            </div>
+        </div>
+        <div id="cabinMessy" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/cabinets_mess.jpg" alt="">
+            </div>
+        </div>
+
+    
+
+    <!-- sofa -->
+
+        <div id="sofa" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/Sofa.jpg" alt="">
+            </div>
+        </div>
+        
+        <div id="sofa2" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/Sofa_jump.jpg" alt="">
+            </div>
+        </div>
+
+        <div id="sofa3" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/Sofa_nose.jpg" alt="">
+            </div>
+        </div>
+      
+        <div id="sofa4" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/Sofa_destroy.jpg" alt="">
+            </div>
+        </div>
+
+        <div id="sofa5" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/Sofa_biting.jpg" alt="">
+            </div>
+        </div>
+
+        <div id="sofa6" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/Sofa_destroyed2.jpg" alt="">
+            </div>
+        </div>
+
+        <!-- tvset -->
+
+        <div id="tv" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/tvstand_looking.jpg" alt="">
+            </div>
+        </div>
+        
+        <div id="tv2" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/tvstand_reflexion.jpg" alt="">
+            </div>
+        </div>
+
+        <div id="tv3" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/tvstand_barking.jpg" alt="">
+            </div>
+        </div>
+
+        <div id="tv4" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/tvstand_climbing.jpg" alt="">
+            </div>
+        </div>
+
+        <div id="tv5" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/tvstand_biting.jpg" alt="">
+            </div>
+        </div>
+
+        <!-- hanger -->
+
+        <div id="hanger" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/hanger_looking.jpg" alt="">
+            </div>
+        </div>
+        
+        <div id="hanger1" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/hanger_jumping.jpg" alt="">
+            </div>
+        </div>
+        <div id="hanger2" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/hanger_intertwined.jpg" alt="">
+            </div>
+        </div>
+
+        <div id="hanger3" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/hanger_surprised.jpg" alt="">
+            </div>
+        </div>
+
+        <div id="hanger4" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/hanger_final.jpg" alt="">
+            </div>
+        </div>
+
+        <!-- coffee table -->
+
+        <div id="coffee0" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/coffeetable_grabs.jpg" alt="">
+            </div>
+        </div>
+
+        <div id="coffee" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/coffeetable_remotechanges.jpg" alt="">
+                <img id="remotearrow" src="core/res/ArrowRight.png" hidden style="size: 30px; position: absolute;"/>
+            </div>
+        </div>
+
+        <div id="coffee1" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/coffeetable_mess.jpg" alt="">
+                <script>Game.inventory.i_AddItem("coffee_opened");</script>
+               
+
+            </div>
+        </div>
+        
+
+        <!-- bookshelf -->
+
+        <div id="book" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/Bookshelf_looking.jpg" alt="">
+            </div>
+        </div>
+        
+        <div id="book1" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/Bookshelf_climbing.jpg" alt="">
+            </div>
+        </div>
+
+        <div id="book2" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/Bookshelf_almostfalling.jpg" alt="">
+            </div>
+        </div>
+        <div id="book3" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/Bookshelf_falling.jpg" alt="">
+            </div>
+        </div>
+        <div id="book4" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/Bookshelf_mess.jpg" alt="">
+            </div>
+        </div>
+
+
+         <!-- ending2 - lazy -->
+
+        <div id="ending2" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/hanger_lazyending.jpg" alt="">
+                <a href="end.html"><img src="core/res/ArrowUp.png" width="150" height="150" id="portal"></a>
+            </div>
+        </div>
+
+        <!-- ending3 - only 1 destroyed -->
+
+        <div id="ending1" class="scene">
+            <div class="scene-content">
+                <!-- Scene background -->
+                <img src="imgs/hanger_kindamessyending.jpg" alt="">
+                
+                <a href="end.html"><img src="core/res/ArrowUp.png" width="150" height="150" id="portal"></a>
+            </div>
+        </div>
+
+        <style>
+
+            #portal{
+                position: absolute;
+                top: 5px;
+                left: 45%;
+            }
+        </style>
+
+    </div>
+
+    <!-- Import le game -->
+    <script type="module" src="game.js"></script>
+
+    
+</body>
+</html>
