@@ -189,9 +189,6 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             Game.text.t_ShowModal("There's more to destroy!");
         }
-        
-        
-        
     });
 
     hangerimg.addSprite("imgs/LivingRoom_hanger.png"); // Add sprite to the trashcan interactable

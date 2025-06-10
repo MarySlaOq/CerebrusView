@@ -28,7 +28,7 @@ let settings = {
         backgroundColor: "rgba(0, 0, 0, 0.5)",
         color: "#FFFFFF",
         fontFamily: "Times New Roman, serif",
-        zIndex: 1000,
+        zIndex: "1000",
     },
     modal_data: {
         display_text: "",
@@ -138,8 +138,12 @@ function game_InitModals() {
             element.style[key] = value;
     }
 
+    element.style.transform = 'translateZ(0)'; // forces stacking context
+    element.style.zIndex = '9999';
+
     modal.addHTML("<p style=\"padding-left: 3vh\">" + settings.modal_data.text + "</p>"); 
     modal.addTag("modal"); // Add a tag for the modal interactable
+
 
     game_RegisterInteractable("root", modal); // Register the modal interactable
     t_HideModal(); // Hide the modal initially
@@ -511,17 +515,6 @@ function i_RemoveItem(item, count = 1) {
 
 function i_GetItem(item) {
     return game_state.inventory[item] || 0;
-
-    const neededItems = [
-        "fridge_opened",
-        "cabinet_opened",
-        "trash_opened",
-        "sofa_opened",
-        "book_opened",
-        "coffee_opened",
-        "tv_opened"
-
-    ]
 }
 
 function t_DequeueModalText() {
@@ -574,6 +567,7 @@ function t_ShowModal(text) {
             return;
         }
         
+        settings.modal_data.display_text = ""; 
         settings.modal_data.text = t_DequeueModalText(); 
 
         if (!settings.modal_data.text) {
@@ -583,6 +577,7 @@ function t_ShowModal(text) {
 
         element.style.display = "block"; // Show the modal
         settings.modal_data.modal_showing = true;
+
 
         // Set the typewritter loop
         settings.modal_data.typewritter_interval = setInterval(t_TypewritterEffect, settings.modal_data.typewritter_speed);
@@ -657,7 +652,12 @@ function t_StepModal() {
 }
 
 function t_HideModal() {
-    
+
+    settings.modal_data.display_text = ""; 
+    settings.modal_data.text = ""; 
+
+    t_UpdateModalText(); 
+
     const modal = game_FindInteractablesOfTag("modal", root())[0];
     if (!modal) {
         console.warn("No modal interactable found.");
@@ -672,7 +672,6 @@ function t_HideModal() {
     } else {
         console.warn(`Element with id ${modal.id} not found.`);
     }
-
 }
 
 // Hook window resize
