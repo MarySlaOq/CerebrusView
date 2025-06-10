@@ -28,7 +28,16 @@ document.addEventListener("DOMContentLoaded", () => {
             if (time <= 0) {
                 clearInterval(timerInterval);
                 Game.game_GotoScene("ending2");
+                if (Game.inventory.i_GetItem("fridge_opened")
+                || Game.inventory.i_GetItem("cabinet_opened")
+                || Game.inventory.i_GetItem("trash_opened")
+                || Game.inventory.i_GetItem("sofa_opened")
+                || Game.inventory.i_GetItem("book_opened")
+                || Game.inventory.i_GetItem("coffee_opened")
+                || Game.inventory.i_GetItem("tv_opened")) {
+                Game.game_GotoScene("ending1");
             }
+            } 
             
             time--; // Decrement after the check
         }
