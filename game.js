@@ -2,7 +2,7 @@ import Game from './core/core.js';
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    Game.settings.debug_colliders = false; // Enable debug colliders
+    Game.settings.debug_colliders = true; // Enable debug colliders
     Game.settings.disable_empty_interactables = true; // Disable empty interactables
     Game.settings.target_resolution = { width: 1920, height: 1080 }; // Set aspect ratio to 16:9
 
@@ -175,9 +175,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add hanger 
     //img
-    let hangerimg = new Interactable(960,83, 1000, 1000);
+    let hangerimg = new Interactable(1080,140, 1000, 1000);
     //hitbox
-    let hanger = new Interactable(1290, 83, 300, 1000, () => {
+    let hanger = new Interactable(1470, 365, 160, 255, () => {
 
         //const allChecked = neededItems.every(key => Game.inventory.i_GetItem(key));
         // Check if the fridge has been opened before
